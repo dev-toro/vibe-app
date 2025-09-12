@@ -51,13 +51,25 @@ function NameCell({ row, onToggleFavorite }: { row: any; onToggleFavorite: (id: 
 const columns = [
   columnHelper.accessor('name', {
     header: () => 'Name',
-  cell: info => <NameCell row={info.row} onToggleFavorite={info.table.options.meta.onToggleFavorite} />,
+    cell: info => <NameCell row={info.row} onToggleFavorite={info.table.options.meta!.onToggleFavorite} />,
     enableSorting: true,
   }),
   columnHelper.accessor('description', {
     header: () => 'Description',
     cell: info => info.getValue(),
     enableSorting: false,
+  }),
+  columnHelper.accessor('lastAccessed', {
+    header: () => 'Last Accessed',
+    cell: info => new Date(info.getValue()).toLocaleString(),
+    enableSorting: true,
+    sortingFn: 'datetime',
+  }),
+  columnHelper.accessor('createdAt', {
+    header: () => 'Created At',
+    cell: info => new Date(info.getValue()).toLocaleString(),
+    enableSorting: true,
+    sortingFn: 'datetime',
   }),
 ];
 
