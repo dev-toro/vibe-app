@@ -11,7 +11,7 @@ export function PackageSearch({ value, onChange }: PackageSearchProps) {
     <div className="w-full max-w-2xl">
       <Input
         type="text"
-        placeholder="Search packages by name..."
+        placeholder="Search..."
         value={value}
         onChange={e => onChange(e.target.value)}
         className="mb-2"

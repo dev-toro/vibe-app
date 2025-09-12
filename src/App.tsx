@@ -26,7 +26,7 @@ function App() {
             <Sidebar />
             {/* Main content area */}
             <div className="flex-1 flex min-h-0 justify-center">
-              <main className="flex-1 max-w-6xl mx-auto bg-white border border-gray-200 rounded-2xl p-8 mt-8 shadow-sm overflow-auto">
+              <main className="flex-1 w-max mx-auto p-6 overflow-auto">
                 <Routes>
                   <Route path="/listing" element={<Listing />} />
                   <Route path="/package/:id" element={<PackageDetail />} />

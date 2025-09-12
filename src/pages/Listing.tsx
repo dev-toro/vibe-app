@@ -65,7 +65,7 @@ export default function Listing() {
     <div className="w-full">
       <div className="flex flex-col gap-4 w-full">
         {/* Table controls row (filters, sort, etc.) can go here if needed */}
-        <div className="w-full overflow-x-auto border border-gray-200 rounded-xl bg-white">
+        <div className="w-full overflow-x-auto">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map(headerGroup => (
