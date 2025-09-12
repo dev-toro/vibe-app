@@ -1,19 +1,20 @@
 import { Link, useLocation, matchPath } from 'react-router-dom';
+import { Home } from 'lucide-react';
 
 const BREADCRUMB_MAP: Record<string, string> = {
-  '/listing': 'Listing',
+  '/listing': 'Workbench',
   '/package/:id': 'Package',
 };
 
 function getBreadcrumbs(pathname: string) {
-  if (pathname === '/') return [{ name: 'Listing', path: '/listing' }];
+  if (pathname === '/') return [{ name: 'Workbench', path: '/listing' }];
   if (pathname.startsWith('/package/')) {
     return [
-      { name: 'Listing', path: '/listing' },
+      { name: 'Workbench', path: '/listing' },
       { name: 'Package', path: pathname },
     ];
   }
-  return [{ name: 'Listing', path: '/listing' }];
+  return [{ name: 'Workbench', path: '/listing' }];
 }
 
 export default function Breadcrumb() {
@@ -33,7 +34,7 @@ export default function Breadcrumb() {
                   : 'hover:underline text-blue-600'
               }
             >
-              {crumb.name}
+              {idx === 0 && <Home className="inline-block w-4 h-4 mr-1 -mt-0.5 align-middle" aria-label="Home" />} {crumb.name}
             </Link>
           </li>
         ))}
