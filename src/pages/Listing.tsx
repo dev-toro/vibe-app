@@ -62,10 +62,10 @@ export default function Listing() {
   });
 
   return (
-    <div className="flex flex-col min-h-screen w-full">
-      <div className="flex-1 flex flex-col items-center justify-center w-full px-4">
-        <h2 className="text-2xl font-bold mb-4">Package Listing</h2>
-        <div className="w-full overflow-x-auto">
+    <div className="w-full">
+      <div className="flex flex-col gap-4 w-full">
+        {/* Table controls row (filters, sort, etc.) can go here if needed */}
+        <div className="w-full overflow-x-auto border border-gray-200 rounded-xl bg-white">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map(headerGroup => (

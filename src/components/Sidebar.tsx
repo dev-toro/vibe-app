@@ -19,10 +19,6 @@ function SidebarItem({ icon, label, small }: { icon: React.ReactNode; label: str
 export default function Sidebar() {
   return (
     <aside className="h-screen w-60 bg-[#f4f5f7] flex flex-col py-6 px-3 rounded-tr-2xl rounded-br-2xl shadow-sm">
-      {/* Top section: Logo */}
-      <div className="flex items-center justify-center mb-8">
-        <div className="h-10 w-10 rounded-full border border-blue-200 flex items-center justify-center text-lg font-bold text-blue-900 bg-white shadow-sm">C</div>
-      </div>
       {/* Main nav */}
       <nav className="flex flex-col gap-1 mb-6">
         <SidebarItem icon={<Search className="w-5 h-5" />} label="Search" />

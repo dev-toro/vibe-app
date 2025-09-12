@@ -25,18 +25,14 @@ function App() {
             {/* Sidebar */}
             <Sidebar />
             {/* Main content area */}
-            <div className="flex-1 flex min-h-0">
-              <main className="flex-1 bg-white border-x border-gray-200 p-6 overflow-auto">
+            <div className="flex-1 flex min-h-0 justify-center">
+              <main className="flex-1 max-w-6xl mx-auto bg-white border border-gray-200 rounded-2xl p-8 mt-8 shadow-sm overflow-auto">
                 <Routes>
                   <Route path="/listing" element={<Listing />} />
                   <Route path="/package/:id" element={<PackageDetail />} />
                   <Route path="*" element={<Navigate to="/listing" replace />} />
                 </Routes>
               </main>
-              {/* Details panel placeholder */}
-              <aside className="w-[340px] bg-white border-l border-gray-200 p-6 hidden lg:block">
-                <div className="text-gray-400 text-center mt-10">Details</div>
-              </aside>
             </div>
           </div>
         </div>
