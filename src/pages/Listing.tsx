@@ -2,6 +2,7 @@ import { Box } from 'lucide-react';
 
 import * as React from 'react';
 import { getPackages } from '../services/packageService';
+import fuzzysort from 'fuzzysort';
 import type { Package } from '../services/packageService';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../components/ui/table';
 import { PackageSearch } from '../components/PackageSearch';
@@ -9,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
   getCoreRowModel,
-  getFilteredRowModel,
   getSortedRowModel,
   flexRender,
   createColumnHelper,
@@ -41,29 +41,23 @@ const columns = [
 export default function Listing() {
   const navigate = useNavigate();
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const data = React.useMemo(() => getPackages(), []);
   const [search, setSearch] = React.useState('');
+  const allPackages = React.useMemo(() => getPackages(), []);
+  const filteredPackages = React.useMemo(() => {
+    if (!search.trim()) return allPackages;
+    const results = fuzzysort.go(search, allPackages, { key: 'name' });
+    return results.map(r => r.obj);
+  }, [allPackages, search]);
 
   const table = useReactTable({
-    data,
+    data: filteredPackages,
     columns,
     state: {
-      globalFilter: search,
       sorting,
     },
-    onGlobalFilterChange: setSearch,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    globalFilterFn: (row, columnId, filterValue) => {
-      // Only filter by name
-      if (columnId === 'name') {
-        const value = row.getValue('name');
-        return typeof value === 'string' && value.toLowerCase().includes(filterValue.toLowerCase());
-      }
-      return true;
-    },
   });
 
   return (
