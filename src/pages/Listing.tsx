@@ -1,10 +1,11 @@
-import { Box } from 'lucide-react';
+import { Box, MoreVertical, Star } from 'lucide-react';
 
 import * as React from 'react';
 import { getPackages } from '../services/packageService';
 import fuzzysort from 'fuzzysort';
 import type { Package } from '../services/packageService';
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../components/ui/table';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '../components/ui/dropdown-menu';
 import { useContext } from 'react';
 import { SearchContext } from '../App';
 import { useNavigate } from 'react-router-dom';
@@ -17,18 +18,40 @@ import {
 } from '@tanstack/react-table';
 import type { SortingState } from '@tanstack/react-table';
 
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends object> {
+    onToggleFavorite: (id: string) => void;
+  }
+}
+
 
 const columnHelper = createColumnHelper<Package>();
+
+function NameCell({ row, onToggleFavorite }: { row: any; onToggleFavorite: (id: string) => void }) {
+  const pkg = row.original;
+  return (
+    <span className="flex items-center gap-2">
+      <Box className="w-4 h-4 text-blue-500" aria-label="package icon" />
+      {pkg.name}
+      {pkg.favorited && <Star className="w-4 h-4 text-yellow-400 ml-1" fill="#facc15" />}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button className="ml-2 p-1 rounded hover:bg-gray-100"><MoreVertical className="w-4 h-4" /></button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={() => onToggleFavorite(pkg.id)}>
+            {pkg.favorited ? 'Remove from favorites' : 'Add to favorites'}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </span>
+  );
+}
 
 const columns = [
   columnHelper.accessor('name', {
     header: () => 'Name',
-    cell: info => (
-      <span className="flex items-center gap-2">
-        <Box className="w-4 h-4 text-blue-500" aria-label="package icon" />
-        {info.getValue()}
-      </span>
-    ),
+  cell: info => <NameCell row={info.row} onToggleFavorite={info.table.options.meta.onToggleFavorite} />,
     enableSorting: true,
   }),
   columnHelper.accessor('description', {
@@ -43,12 +66,17 @@ export default function Listing() {
   const navigate = useNavigate();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const { search } = useContext(SearchContext);
-  const allPackages = React.useMemo(() => getPackages(), []);
+  const [packages, setPackages] = React.useState(() => getPackages());
+  const allPackages = packages;
   const filteredPackages = React.useMemo(() => {
     if (!search.trim()) return allPackages;
     const results = fuzzysort.go(search, allPackages, { key: 'name' });
     return results.map(r => r.obj);
   }, [allPackages, search]);
+
+  const onToggleFavorite = (id: string) => {
+    setPackages(pkgs => pkgs.map(pkg => pkg.id === id ? { ...pkg, favorited: !pkg.favorited } : pkg));
+  };
 
   const table = useReactTable({
     data: filteredPackages,
@@ -59,6 +87,7 @@ export default function Listing() {
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    meta: { onToggleFavorite },
   });
 
   return (

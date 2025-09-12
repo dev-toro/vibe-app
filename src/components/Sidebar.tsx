@@ -2,7 +2,8 @@
 
 import * as React from 'react';
 import { Button } from './ui/button';
-import { Home, Search, Clock, Folder, Layout, Gift, HelpCircle, Bell, Settings, User } from 'lucide-react';
+import { Home, Search, Clock, Folder, Layout, Gift, HelpCircle, Bell, Settings, User, Star } from 'lucide-react';
+import { getPackages } from '../services/packageService';
 
 function SidebarItem({ icon, label, small }: { icon: React.ReactNode; label: string; small?: boolean }) {
   return (
@@ -18,7 +19,7 @@ function SidebarItem({ icon, label, small }: { icon: React.ReactNode; label: str
 
 export default function Sidebar() {
   return (
-    <aside className="h-screen w-60 bg-[#f4f5f7] flex flex-col py-6 px-3 rounded-tr-2xl rounded-br-2xl shadow-sm">
+    <aside className="h-screen w-60 bg-[#f4f5f7] flex flex-col py-6 px-3 shadow-sm">
       {/* Main nav */}
       <nav className="flex flex-col gap-1 mb-6">
         <SidebarItem icon={<Search className="w-5 h-5" />} label="Search" />
@@ -28,10 +29,9 @@ export default function Sidebar() {
       </nav>
       <div className="mb-2 mt-4 px-2 text-[11px] font-bold text-gray-500 tracking-widest">FAVORITES</div>
       <div className="flex flex-col gap-1 mb-6">
-        <SidebarItem icon={<Layout className="w-5 h-5" />} label="View - Title 1" small />
-        <SidebarItem icon={<Folder className="w-5 h-5" />} label="Project - Title 1" small />
-        <SidebarItem icon={<Folder className="w-5 h-5" />} label="Project - Title 2" small />
-        <SidebarItem icon={<Folder className="w-5 h-5" />} label="Project - Title" small />
+        {getPackages().filter(pkg => pkg.favorited).map(pkg => (
+          <SidebarItem key={pkg.id} icon={<Star className="w-5 h-5 text-yellow-400" />} label={pkg.name} small />
+        ))}
       </div>
       <div className="mt-auto">
         <nav className="flex flex-col gap-1">
