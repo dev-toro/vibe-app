@@ -3,6 +3,8 @@ import * as React from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { Home } from 'lucide-react';
 import { getPackageById } from '../services/packageService';
+import { useContext } from 'react';
+import { SelectedAssetContext } from './Sidebar';
 import {
   Breadcrumb as ShadBreadcrumb,
   BreadcrumbList,
@@ -12,13 +14,17 @@ import {
   BreadcrumbSeparator,
 } from './ui/breadcrumb';
 
-function getBreadcrumbItems(pathname: string, packageName?: string) {
+function getBreadcrumbItems(pathname: string, packageName?: string, selectedAsset?: { name: string }) {
   if (pathname === '/') return [{ label: 'Workbench', href: '/listing', isCurrentPage: true }];
   if (pathname.startsWith('/package/')) {
-    return [
+    const items = [
       { label: 'Workbench', href: '/listing', isCurrentPage: false },
-      { label: packageName || 'Package', href: pathname, isCurrentPage: true },
+      { label: packageName || 'Package', href: pathname, isCurrentPage: !selectedAsset },
     ];
+    if (selectedAsset) {
+      items.push({ label: selectedAsset.name, href: '', isCurrentPage: true });
+    }
+    return items;
   }
   return [{ label: 'Workbench', href: '/listing', isCurrentPage: true }];
 }
@@ -29,6 +35,9 @@ export default function Breadcrumb({ onBreadcrumbClick, showHomeIcon = true }: {
 } = {}) {
   const location = useLocation();
   const params = useParams();
+  const ctx = useContext(SelectedAssetContext);
+  const selectedAsset = ctx.selectedAsset ?? undefined;
+  const setShowPackageHome = (ctx as any).setShowPackageHome;
   let packageName: string | undefined = undefined;
   let id = params.id;
   if (!id && location.pathname.startsWith('/package/')) {
@@ -39,7 +48,7 @@ export default function Breadcrumb({ onBreadcrumbClick, showHomeIcon = true }: {
     const pkg = getPackageById(id);
     packageName = pkg?.name || id;
   }
-  const breadcrumbItems = getBreadcrumbItems(location.pathname, packageName);
+  const breadcrumbItems = getBreadcrumbItems(location.pathname, packageName, selectedAsset);
   return (
     <ShadBreadcrumb>
       <BreadcrumbList>
@@ -53,7 +62,9 @@ export default function Breadcrumb({ onBreadcrumbClick, showHomeIcon = true }: {
                   href={item.href}
                   onClick={e => {
                     e.preventDefault();
-                    if (onBreadcrumbClick && item.href) {
+                    if (index === 1 && setShowPackageHome) {
+                      setShowPackageHome(true);
+                    } else if (onBreadcrumbClick && item.href) {
                       onBreadcrumbClick(item.href);
                     } else if (item.href) {
                       window.location.href = item.href;
