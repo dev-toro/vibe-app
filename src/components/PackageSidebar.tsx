@@ -23,14 +23,12 @@ type TreeNode = {
   asset?: any;
 };
 
-const L0_ITEMS = [
+const ASSET_TYPES: { key: string; icon: React.ReactNode; label: string }[] = [
   { key: 'browse', icon: <Folder className="w-7 h-7" />, label: 'Browse' },
-  { key: 'tasks', icon: <ListChecks className="w-7 h-7" />, label: 'Tasks' },
-  { key: 'grid', icon: <LayoutGrid className="w-7 h-7" />, label: 'Grid' },
-  { key: 'plus', icon: <PlusIcon className="w-7 h-7" />, label: 'Add' },
-  { key: 'pkg', icon: <Package2 className="w-7 h-7" />, label: 'Package' },
-  { key: 'bulb', icon: <Lightbulb className="w-7 h-7" />, label: 'Ideas' },
-  { key: 'search', icon: <SearchIcon className="w-7 h-7" />, label: 'Search' },
+  { key: 'view', icon: <Layout className="w-7 h-7" />, label: 'Views' },
+  { key: 'api', icon: <Server className="w-7 h-7" />, label: 'APIs' },
+  { key: 'config', icon: <Settings className="w-7 h-7" />, label: 'Configs' },
+  { key: 'job', icon: <Play className="w-7 h-7" />, label: 'Jobs' },
 ];
 
 export default function PackageSidebar() {
@@ -42,6 +40,40 @@ export default function PackageSidebar() {
   const pkg = getPackageById(packageId);
   // Build a tree structure for folders/assets
   // Recursively build a tree structure for folders/assets (supports nested folders)
+  // ...existing code...
+
+
+
+    // Only build tree for browse tab
+  // ...existing code...
+
+
+
+  // State for expanded folders
+  const [expanded, setExpanded] = React.useState<{ [id: string]: boolean }>({});
+  const [search, setSearch] = React.useState('');
+  const [activeTab, setActiveTab] = React.useState<string>('browse');
+
+  // Helper: flatten all assets of a given type from folders and subfolders
+  function flattenAssetsByType(pkg: any, type: AssetType): any[] {
+    let result: any[] = [];
+    function walkFolders(folders: any[]) {
+      for (const folder of folders) {
+        if (folder.assets) {
+          result = result.concat(folder.assets.filter((a: any) => a.type === type));
+        }
+        if (folder.folders) {
+          walkFolders(folder.folders);
+        }
+      }
+    }
+    if (pkg?.folders) walkFolders(pkg.folders);
+    if (pkg?.assets) result = result.concat(pkg.assets.filter((a: any) => a.type === type));
+    return result;
+  }
+
+  // Only build tree and renderTree for browse tab
+  let tree: TreeNode[] = [];
   function buildTreeFromFolders(folders: any[]): TreeNode[] {
     return folders.map((folder: any) => {
       let children: TreeNode[] = [];
@@ -64,15 +96,14 @@ export default function PackageSidebar() {
       };
     });
   }
-
-  function buildTree(pkg: any): TreeNode[] {
-    const nodes: TreeNode[] = [];
+  // ...existing code...
+  if (activeTab === 'browse' && pkg) {
     if (pkg?.folders && pkg.folders.length > 0) {
-      nodes.push(...buildTreeFromFolders(pkg.folders));
+      tree.push(...buildTreeFromFolders(pkg.folders));
     }
     if (pkg?.assets && pkg.assets.length > 0) {
       pkg.assets.forEach((asset: any) => {
-        nodes.push({
+        tree.push({
           id: asset.id,
           name: asset.name,
           type: 'asset',
@@ -80,16 +111,7 @@ export default function PackageSidebar() {
         });
       });
     }
-    return nodes;
   }
-
-
-  // State for expanded folders
-  const [expanded, setExpanded] = React.useState<{ [id: string]: boolean }>({});
-  const [search, setSearch] = React.useState('');
-  const [activeTab, setActiveTab] = React.useState('browse');
-
-  const tree = buildTree(pkg);
 
   function handleToggle(id: string) {
     setExpanded(prev => ({ ...prev, [id]: !prev[id] }));
@@ -120,8 +142,8 @@ export default function PackageSidebar() {
       }
       // Pick icon based on asset type
       let Icon = Box;
-      if (node.asset?.type && assetTypeIcon[node.asset.type]) {
-  Icon = assetTypeIcon[node.asset.type as AssetType];
+      if (node.asset?.type && (assetTypeIcon as any)[node.asset.type]) {
+        Icon = (assetTypeIcon as any)[node.asset.type];
       }
       return (
         <button
@@ -139,9 +161,9 @@ export default function PackageSidebar() {
 
   return (
     <div className="h-screen flex flex-row bg-[#f7f8fa]">
-      {/* Vertical L0 Navigation */}
+      {/* Vertical L0 Navigation: one per asset type */}
       <nav className="flex flex-col items-center py-2 px-0 gap-0.5 w-12 bg-[#f7f8fa] border-r border-gray-200">
-        {L0_ITEMS.map((item, idx) => (
+        {ASSET_TYPES.map((item, idx) => (
           <Button
             key={item.key}
             variant="ghost"
@@ -151,20 +173,19 @@ export default function PackageSidebar() {
             style={activeTab === item.key ? { boxShadow: '0 0 0 2px #6366f1, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
           >
             {item.icon}
+            <span className="sr-only">{item.label}</span>
           </Button>
         ))}
         <div className="flex-1" />
       </nav>
-      {/* L1 Content */}
+      {/* L1 Content: flat list of assets by type */}
       <aside className="flex-1 flex flex-col py-4 px-0 min-w-[320px] max-w-[380px] border-r border-gray-200 bg-white">
-        {activeTab === 'browse' && (
+        {activeTab === 'browse' ? (
           <>
             <div className="flex items-center gap-2 mb-2 px-4">
               <span className="font-semibold text-[16px] text-gray-900">Browse Assets</span>
               <div className="flex-1" />
               <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-blue-600" /></Button>
-              <Button variant="ghost" size="icon" className="rounded p-1"><ChevronDown className="w-4 h-4 text-gray-400" /></Button>
-              <Button variant="ghost" size="icon" className="rounded p-1"><MoreVertical className="w-4 h-4 text-gray-400" /></Button>
             </div>
             <div className="flex items-center gap-2 mb-3 px-4">
               <div className="relative w-full">
@@ -181,24 +202,47 @@ export default function PackageSidebar() {
               {tree.length > 0 ? renderTree(tree) : <div className="text-xs text-gray-400 px-3">No assets</div>}
             </div>
           </>
-        )}
-        {activeTab === 'tasks' && (
-          <div className="flex-1 flex items-center justify-center text-gray-400 text-lg">Tasks Placeholder</div>
-        )}
-        {activeTab === 'grid' && (
-          <div className="flex-1 flex items-center justify-center text-gray-400 text-lg">Grid Placeholder</div>
-        )}
-        {activeTab === 'plus' && (
-          <div className="flex-1 flex items-center justify-center text-gray-400 text-lg">Add Placeholder</div>
-        )}
-        {activeTab === 'pkg' && (
-          <div className="flex-1 flex items-center justify-center text-gray-400 text-lg">Package Placeholder</div>
-        )}
-        {activeTab === 'bulb' && (
-          <div className="flex-1 flex items-center justify-center text-gray-400 text-lg">Ideas Placeholder</div>
-        )}
-        {activeTab === 'search' && (
-          <div className="flex-1 flex items-center justify-center text-gray-400 text-lg">Search Placeholder</div>
+        ) : (
+          <>
+            <div className="flex items-center gap-2 mb-2 px-4">
+              <span className="font-semibold text-[16px] text-gray-900">{ASSET_TYPES.find(t => t.key === activeTab)?.label} Assets</span>
+              <div className="flex-1" />
+              <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-blue-600" /></Button>
+            </div>
+            <div className="flex items-center gap-2 mb-3 px-4">
+              <div className="relative w-full">
+                <Input
+                  className="w-full pl-8 pr-2 text-[15px] h-9 border-gray-200 bg-[#f7f8fa] focus:bg-white"
+                  placeholder={`Search ${ASSET_TYPES.find(t => t.key === activeTab)?.label?.toLowerCase()}`}
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                />
+                <Search className="absolute left-2 top-2.5 w-4 h-4 text-gray-400" />
+              </div>
+            </div>
+            <div className="flex flex-col gap-1 overflow-y-auto pr-1 px-2" style={{ maxHeight: 'calc(100vh - 210px)' }}>
+              {(() => {
+                const assets = flattenAssetsByType(pkg, activeTab as AssetType).filter((a: any) =>
+                  a.name.toLowerCase().includes(search.toLowerCase())
+                );
+                if (assets.length === 0) return <div className="text-xs text-gray-400 px-3">No assets</div>;
+                return assets.map((asset: any) => {
+                  const Icon = assetTypeIcon[asset.type as AssetType] || Box;
+                  return (
+                    <button
+                      key={asset.id}
+                      className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors ${selectedAsset?.id === asset.id ? 'bg-blue-100' : ''}`}
+                      onClick={() => setSelectedAsset(asset)}
+                    >
+                      <Icon className="w-4 h-4 text-blue-500" />
+                      <span>{asset.name}</span>
+                      <MoreVertical className="w-4 h-4 ml-auto text-gray-300 group-hover:text-gray-400" />
+                    </button>
+                  );
+                });
+              })()}
+            </div>
+          </>
         )}
       </aside>
     </div>
