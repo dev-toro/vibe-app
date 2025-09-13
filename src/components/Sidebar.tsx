@@ -2,12 +2,36 @@
 
 import * as React from 'react';
 import { Button } from './ui/button';
-import { Home, Search, Clock, Folder, Layout, Gift, HelpCircle, Bell, Settings, User, Box } from 'lucide-react';
+import { Home, Search, Clock, Folder, Gift, HelpCircle, Bell, Settings, User, Box } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getPackages, getPackageById } from '../services/packageService';
-import { useLocation, useParams } from 'react-router-dom';
+import { createContext, useContext } from 'react';
+// Asset type for context
+export type Asset = {
+  id: string;
+  name: string;
+  yaml: string;
+};
+export type SelectedAssetContextType = {
+  selectedAsset: Asset | null;
+  setSelectedAsset: (asset: Asset | null) => void;
+};
+export const SelectedAssetContext = createContext<SelectedAssetContextType>({
+  selectedAsset: null,
+  setSelectedAsset: () => {},
+});
+import { useLocation } from 'react-router-dom';
 
-function SidebarItem({ icon, label, small, to }: { icon: React.ReactNode; label: string; small?: boolean; to?: string }) {
+type SidebarItemProps = {
+  icon: React.ReactNode;
+  label: string;
+  small?: boolean;
+  to?: string;
+  onClick?: () => void;
+  className?: string;
+};
+
+function SidebarItem({ icon, label, small, to, onClick, className }: SidebarItemProps) {
   const content = (
     <span className="flex items-center gap-3">
       <span className="text-blue-900">{icon}</span>
@@ -18,7 +42,8 @@ function SidebarItem({ icon, label, small, to }: { icon: React.ReactNode; label:
     return (
       <Link
         to={to}
-        className={`w-full flex items-center gap-3 px-3 ${small ? 'py-1 text-[15px]' : 'py-2 text-base'} rounded-lg text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors`}
+        className={`w-full flex items-center gap-3 px-3 ${small ? 'py-1 text-[15px]' : 'py-2 text-base'} rounded-lg text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors ${className || ''}`}
+        onClick={onClick}
       >
         {icon}
         <span>{label}</span>
@@ -28,7 +53,8 @@ function SidebarItem({ icon, label, small, to }: { icon: React.ReactNode; label:
   return (
     <Button
       variant="ghost"
-      className={`w-full justify-start gap-3 px-3 ${small ? 'py-1 text-[15px]' : 'py-2 text-base'} rounded-lg text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors`}
+      className={`w-full justify-start gap-3 px-3 ${small ? 'py-1 text-[15px]' : 'py-2 text-base'} rounded-lg text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors ${className || ''}`}
+      onClick={onClick}
     >
       <span className="text-blue-900">{icon}</span>
       <span>{label}</span>
@@ -36,16 +62,16 @@ function SidebarItem({ icon, label, small, to }: { icon: React.ReactNode; label:
   );
 }
 
+
 export default function Sidebar() {
   const location = useLocation();
-  // Match /package/:id
+  const { selectedAsset, setSelectedAsset } = useContext(SelectedAssetContext);
   const match = location.pathname.match(/^\/package\/(.+)$/);
-  let content;
   if (match) {
     const packageId = match[1];
     const pkg = getPackageById(packageId);
-    content = (
-      <>
+    return (
+      <aside className="h-screen w-60 bg-[#f4f5f7] flex flex-col py-6 px-3 shadow-sm">
         <div className="mb-2 mt-4 px-2 text-[11px] font-bold text-gray-500 tracking-widest">ASSETS</div>
         <div className="flex flex-col gap-1 mb-6">
           {pkg?.assets && pkg.assets.length > 0 ? (
@@ -55,18 +81,20 @@ export default function Sidebar() {
                 icon={<Box className="w-4 h-4 text-blue-500" />}
                 label={asset.name}
                 small
-                // Optionally, add navigation to asset detail if needed
+                onClick={() => setSelectedAsset(asset)}
+                // highlight if selected
+                className={selectedAsset?.id === asset.id ? 'bg-blue-100' : ''}
               />
             ))
           ) : (
             <div className="text-xs text-gray-400 px-3">No assets</div>
           )}
         </div>
-      </>
+      </aside>
     );
   } else {
-    content = (
-      <>
+    return (
+      <aside className="h-screen w-60 bg-[#f4f5f7] flex flex-col py-6 px-3 shadow-sm">
         {/* Main nav */}
         <nav className="flex flex-col gap-1 mb-6">
           <SidebarItem icon={<Search className="w-5 h-5" />} label="Search" />
@@ -95,12 +123,7 @@ export default function Sidebar() {
             <SidebarItem icon={<User className="w-5 h-5" />} label="Profile" />
           </nav>
         </div>
-      </>
+      </aside>
     );
   }
-  return (
-    <aside className="h-screen w-60 bg-[#f4f5f7] flex flex-col py-6 px-3 shadow-sm">
-      {content}
-    </aside>
-  );
 }
