@@ -14,6 +14,7 @@ export type AssetFolder = {
   id: string;
   name: string;
   assets: Asset[];
+  folders?: AssetFolder[];
 };
 export type Package = {
   id: string;
@@ -36,21 +37,139 @@ export function getPackages(): Package[] {
       createdAt: '2025-08-01T09:00:00Z',
       favorited: true,
       folders: [
+        // Shared folders with a random mix of asset types and uneven distribution
         {
-          id: 'f1',
-          name: 'Config Examples',
+          id: 'shared-root',
+          name: 'Shared',
           assets: [
-            { id: 'a1', name: 'Handsome View', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Handsome View\nlayout: grid\nfields:\n  - name: foo\n    type: string' },
-            { id: 'a2', name: 'API Example', type: 'api', icon: 'Server', yaml: 'type: api\nendpoint: /api/example\nmethod: GET\nparams:\n  - name: id\n    type: int' },
+            { id: 'shared-1', name: 'Config: Global Settings', type: 'config', icon: 'Settings', yaml: 'type: config\nsettings:\n  global: true\n  version: 1.2.3\n  updated: 2025-09-14' },
+            { id: 'shared-2', name: 'API: Healthcheck', type: 'api', icon: 'Server', yaml: 'type: api\nendpoint: /api/health\nmethod: GET\ndescription: Healthcheck endpoint' },
+          ],
+          folders: [
+            {
+              id: 'shared-views',
+              name: 'Shared Views',
+              assets: Array.from({ length: 7 }, (_, i) => {
+                const layouts = ['grid', 'list', 'mosaic', 'kanban'];
+                const layout = layouts[Math.floor(Math.random() * layouts.length)];
+                const titles = ['Dashboard', 'Overview', 'Workspace', 'Board', 'Panel', 'Monitor', 'Console'];
+                const title = titles[i % titles.length] + (Math.random() > 0.5 ? ` ${i+1}` : '');
+                return {
+                  id: `shared-view-${i+1}`,
+                  name: `View: ${title}`,
+                  type: 'view',
+                  icon: 'Layout',
+                  yaml: `type: view\ntitle: ${title}\nlayout: ${layout}\ncreated: 2025-09-${10+i}`,
+                };
+              }),
+            },
+            {
+              id: 'shared-mixed',
+              name: 'Mixed Assets',
+              assets: [
+                { id: 'shared-mix-1', name: 'Job: Nightly Sync', type: 'job', icon: 'Play', yaml: 'type: job\nname: Nightly Sync\nschedule: "0 2 * * *"\nowner: ops-team' },
+                { id: 'shared-mix-2', name: 'Config: Feature Flags', type: 'config', icon: 'Settings', yaml: 'type: config\nsettings:\n  featureA: enabled\n  featureB: disabled' },
+                { id: 'shared-mix-3', name: 'API: Data Import', type: 'api', icon: 'Server', yaml: 'type: api\nendpoint: /api/import\nmethod: POST\nnotes: Handles bulk data import' },
+              ],
+            },
           ],
         },
-        {
-          id: 'f2',
-          name: 'Advanced',
-          assets: [
-            { id: 'a3', name: 'Config File', type: 'config', icon: 'Settings', yaml: 'type: config\nsettings:\n  theme: dark\n  debug: true' },
+        // Team folders with random asset/folder distribution
+        ...['Alice', 'Bob', 'Carol', 'Dave', 'Eve'].map((member, idx) => ({
+          id: `team-${member.toLowerCase()}`,
+          name: `${member}'s Folder`,
+          assets: Array.from({ length: Math.floor(Math.random() * 6) + 2 }, (_, i) => {
+            const types: AssetType[] = ['view', 'api', 'config', 'job'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            const icon = type === 'view' ? 'Layout' : type === 'api' ? 'Server' : type === 'config' ? 'Settings' : 'Play';
+            // Randomize names and yaml
+            const namePrefixes = {
+              view: ['UI', 'Panel', 'Board', 'Screen', 'Widget'],
+              api: ['Endpoint', 'Service', 'API', 'Webhook'],
+              config: ['Settings', 'Config', 'Profile', 'Env'],
+              job: ['Task', 'Job', 'Worker', 'Process'],
+            };
+            const prefix = namePrefixes[type][Math.floor(Math.random() * namePrefixes[type].length)];
+            const name = `${prefix} ${Math.floor(Math.random()*100)}`;
+            let yaml = '';
+            if (type === 'view') {
+              const layouts = ['grid', 'list', 'mosaic'];
+              yaml = `type: view\ntitle: ${name}\nlayout: ${layouts[Math.floor(Math.random()*layouts.length)]}\nowner: ${member}`;
+            } else if (type === 'api') {
+              const verbs = ['GET', 'POST', 'PUT', 'DELETE'];
+              yaml = `type: api\nendpoint: /api/${member.toLowerCase()}/${name.replace(/\s/g,'-').toLowerCase()}\nmethod: ${verbs[Math.floor(Math.random()*verbs.length)]}\ndescription: Randomly generated API`;
+            } else if (type === 'config') {
+              yaml = `type: config\nsettings:\n  ${name.replace(/\s/g,'_').toLowerCase()}: true\n  updated: 2025-09-14`;
+            } else {
+              yaml = `type: job\nname: ${name}\nschedule: '${Math.floor(Math.random()*24)} ${Math.floor(Math.random()*60)} * * *'\nnotes: Random job for ${member}`;
+            }
+            return {
+              id: `${member.toLowerCase()}-asset-${i+1}`,
+              name,
+              type,
+              icon,
+              yaml,
+            };
+          }),
+          folders: [
+            {
+              id: `${member.toLowerCase()}-deep`,
+              name: `${member}'s Deep Work`,
+              assets: Array.from({ length: Math.floor(Math.random() * 5) + 2 }, (_, i) => {
+                const types: AssetType[] = ['view', 'api', 'config', 'job'];
+                const type = types[Math.floor(Math.random() * types.length)];
+                const icon = type === 'view' ? 'Layout' : type === 'api' ? 'Server' : type === 'config' ? 'Settings' : 'Play';
+                const name = `${member} ${['Alpha', 'Beta', 'Gamma', 'Delta'][Math.floor(Math.random()*4)]} ${type}`;
+                let yaml = '';
+                if (type === 'view') {
+                  yaml = `type: view\ntitle: ${name}\nlayout: ${['grid','list'][Math.floor(Math.random()*2)]}`;
+                } else if (type === 'api') {
+                  yaml = `type: api\nendpoint: /api/${name.replace(/\s/g,'-').toLowerCase()}\nmethod: ${['GET','POST'][Math.floor(Math.random()*2)]}`;
+                } else if (type === 'config') {
+                  yaml = `type: config\nsettings:\n  ${name.replace(/\s/g,'_').toLowerCase()}: ${Math.random()>0.5?'true':'false'}`;
+                } else {
+                  yaml = `type: job\nname: ${name}\nschedule: '${Math.floor(Math.random()*24)} ${Math.floor(Math.random()*60)} * * *'`;
+                }
+                return {
+                  id: `${member.toLowerCase()}-deep-asset-${i+1}`,
+                  name,
+                  type,
+                  icon,
+                  yaml,
+                };
+              }),
+              folders: [
+                {
+                  id: `${member.toLowerCase()}-deepest`,
+                  name: `${member}'s Deepest`,
+                  assets: Array.from({ length: Math.floor(Math.random() * 4) + 2 }, (_, i) => {
+                    const types: AssetType[] = ['view', 'api', 'config', 'job'];
+                    const type = types[Math.floor(Math.random() * types.length)];
+                    const icon = type === 'view' ? 'Layout' : type === 'api' ? 'Server' : type === 'config' ? 'Settings' : 'Play';
+                    const name = `${member} Deepest ${['Spec', 'Doc', 'Run', 'Test'][Math.floor(Math.random()*4)]} ${type}`;
+                    let yaml = '';
+                    if (type === 'view') {
+                      yaml = `type: view\ntitle: ${name}\nlayout: ${['mosaic','list','grid'][Math.floor(Math.random()*3)]}`;
+                    } else if (type === 'api') {
+                      yaml = `type: api\nendpoint: /api/${name.replace(/\s/g,'-').toLowerCase()}\nmethod: ${['GET','POST','PUT'][Math.floor(Math.random()*3)]}`;
+                    } else if (type === 'config') {
+                      yaml = `type: config\nsettings:\n  ${name.replace(/\s/g,'_').toLowerCase()}: ${Math.random()>0.5?'enabled':'disabled'}`;
+                    } else {
+                      yaml = `type: job\nname: ${name}\nschedule: '${Math.floor(Math.random()*24)} ${Math.floor(Math.random()*60)} * * *'`;
+                    }
+                    return {
+                      id: `${member.toLowerCase()}-deepest-asset-${i+1}`,
+                      name,
+                      type,
+                      icon,
+                      yaml,
+                    };
+                  }),
+                },
+              ],
+            },
           ],
-        },
+        })),
       ],
     },
     {
