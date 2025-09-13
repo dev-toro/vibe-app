@@ -1,8 +1,12 @@
 
 // src/services/packageService.ts
+export type AssetType = 'view' | 'api' | 'config' | 'job';
+
 export type Asset = {
   id: string;
   name: string;
+  type: AssetType;
+  icon?: string; // optional icon name for UI
   yaml: string;
 };
 
@@ -36,15 +40,15 @@ export function getPackages(): Package[] {
           id: 'f1',
           name: 'Config Examples',
           assets: [
-            { id: 'a1', name: 'Asset A1', yaml: 'config: value\nfoo: bar' },
-            { id: 'a2', name: 'Asset A2', yaml: 'config: value2\nbar: baz' },
+            { id: 'a1', name: 'Handsome View', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Handsome View\nlayout: grid\nfields:\n  - name: foo\n    type: string' },
+            { id: 'a2', name: 'API Example', type: 'api', icon: 'Server', yaml: 'type: api\nendpoint: /api/example\nmethod: GET\nparams:\n  - name: id\n    type: int' },
           ],
         },
         {
           id: 'f2',
           name: 'Advanced',
           assets: [
-            { id: 'a3', name: 'Asset A3', yaml: 'advanced: true\nfoo: advanced' },
+            { id: 'a3', name: 'Config File', type: 'config', icon: 'Settings', yaml: 'type: config\nsettings:\n  theme: dark\n  debug: true' },
           ],
         },
       ],
@@ -61,7 +65,7 @@ export function getPackages(): Package[] {
           id: 'f3',
           name: 'Beta Folder',
           assets: [
-            { id: 'b1', name: 'Asset B1', yaml: 'config: beta\nfoo: beta' },
+            { id: 'b1', name: 'Job Runner', type: 'job', icon: 'Play', yaml: 'type: job\nname: Beta Job\nschedule: "0 0 * * *"\nscript: run.sh' },
           ],
         },
       ],
@@ -74,15 +78,15 @@ export function getPackages(): Package[] {
       createdAt: '2025-08-10T15:20:00Z',
       favorited: true,
       assets: [
-        { id: 'g1', name: 'Asset G1', yaml: 'config: gamma\nfoo: gamma' },
-        { id: 'g2', name: 'Asset G2', yaml: 'config: gamma2\nbar: gamma2' },
+        { id: 'g1', name: 'Gamma View', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Gamma View\nlayout: list' },
+        { id: 'g2', name: 'Gamma API', type: 'api', icon: 'Server', yaml: 'type: api\nendpoint: /api/gamma\nmethod: POST' },
       ],
     },
     // ...other packages remain unchanged for brevity...
     { id: '4', name: 'Delta', description: 'Delta package description.', lastAccessed: '2025-09-12T08:00:00Z', createdAt: '2025-08-15T13:00:00Z', favorited: false, assets: [] },
     { id: '5', name: 'Epsilon', description: 'Epsilon package description.', lastAccessed: '2025-09-08T19:30:00Z', createdAt: '2025-08-20T10:10:00Z', favorited: false, assets: [] },
     { id: '6', name: 'Zeta', description: 'Zeta package description.', lastAccessed: '2025-09-07T12:00:00Z', createdAt: '2025-08-25T08:45:00Z', favorited: true, assets: [
-      { id: 'z1', name: 'Asset Z1', yaml: 'config: zeta\nfoo: zeta' },
+      { id: 'z1', name: 'Zeta Config', type: 'config', icon: 'Settings', yaml: 'type: config\nsettings:\n  zeta: true' },
     ] },
     { id: '7', name: 'Eta', description: 'Eta package description.', lastAccessed: '2025-09-06T17:15:00Z', createdAt: '2025-08-30T14:00:00Z', favorited: false, assets: [] },
     { id: '8', name: 'Theta', description: 'Theta package description.', lastAccessed: '2025-09-05T11:05:00Z', createdAt: '2025-09-01T09:30:00Z', favorited: false, assets: [] },

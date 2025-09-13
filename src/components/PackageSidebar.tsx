@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { Box, Folder, ChevronDown, ChevronRight, Plus, Search, MoreVertical, ListChecks, LayoutGrid, Plus as PlusIcon, Package2, Lightbulb, Search as SearchIcon } from 'lucide-react';
+import { Box, Folder, ChevronDown, ChevronRight, Plus, Search, MoreVertical, ListChecks, LayoutGrid, Plus as PlusIcon, Package2, Lightbulb, Search as SearchIcon, Layout, Server, Settings, Play } from 'lucide-react';
+import type { AssetType } from '../services/packageService';
+// Map asset type to icon component
+const assetTypeIcon: Record<AssetType, React.ComponentType<{ className?: string }>> = {
+  view: Layout,
+  api: Server,
+  config: Settings,
+  job: Play,
+};
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { getPackageById } from '../services/packageService';
@@ -110,13 +118,18 @@ export default function PackageSidebar() {
           </div>
         );
       }
+      // Pick icon based on asset type
+      let Icon = Box;
+      if (node.asset?.type && assetTypeIcon[node.asset.type]) {
+  Icon = assetTypeIcon[node.asset.type as AssetType];
+      }
       return (
         <button
           key={node.id}
           className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors ${selectedAsset?.id === node.id ? 'bg-blue-100' : ''}`}
           onClick={() => setSelectedAsset(node.asset)}
         >
-          <Box className="w-4 h-4 text-blue-500" />
+          <Icon className="w-4 h-4 text-blue-500" />
           <span>{node.name}</span>
           <MoreVertical className="w-4 h-4 ml-auto text-gray-300 group-hover:text-gray-400" />
         </button>
