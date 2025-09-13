@@ -4,6 +4,7 @@ export interface SandboxProps {
   className?: string;
 }
 
+import * as React from "react";
 import MonacoEditor from "@monaco-editor/react";
 
 export function Sandbox({ files, editorHeight = "400px", className }: SandboxProps) {
@@ -11,6 +12,12 @@ export function Sandbox({ files, editorHeight = "400px", className }: SandboxPro
   const fileEntry = files ? (Object.entries(files)[0] as [string, { code: string }] | undefined) : undefined;
   const fileName = fileEntry ? fileEntry[0] : "example.yaml";
   const code = fileEntry ? fileEntry[1].code : "# No YAML provided";
+  const [value, setValue] = React.useState(code);
+
+  // Update editor value when asset changes
+  React.useEffect(() => {
+    setValue(code);
+  }, [code]);
 
   return (
     <div
@@ -42,10 +49,12 @@ export function Sandbox({ files, editorHeight = "400px", className }: SandboxPro
       </header>
       <div style={{ flex: 1, minHeight: 0, minWidth: 0 }}>
         <MonacoEditor
+          key={fileName}
           height="100%"
           width="100%"
           defaultLanguage="yaml"
-          defaultValue={code}
+          value={value}
+          onChange={v => setValue(v ?? "")}
           theme="vs-dark"
           options={{
             minimap: { enabled: false },
