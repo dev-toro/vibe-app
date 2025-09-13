@@ -2,10 +2,28 @@
 
 import * as React from 'react';
 import { Button } from './ui/button';
-import { Home, Search, Clock, Folder, Layout, Gift, HelpCircle, Bell, Settings, User, Star } from 'lucide-react';
+import { Home, Search, Clock, Folder, Layout, Gift, HelpCircle, Bell, Settings, User, Box } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { getPackages } from '../services/packageService';
 
-function SidebarItem({ icon, label, small }: { icon: React.ReactNode; label: string; small?: boolean }) {
+function SidebarItem({ icon, label, small, to }: { icon: React.ReactNode; label: string; small?: boolean; to?: string }) {
+  const content = (
+    <span className="flex items-center gap-3">
+      <span className="text-blue-900">{icon}</span>
+      <span>{label}</span>
+    </span>
+  );
+  if (to) {
+    return (
+      <Link
+        to={to}
+        className={`w-full flex items-center gap-3 px-3 ${small ? 'py-1 text-[15px]' : 'py-2 text-base'} rounded-lg text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors`}
+      >
+        {icon}
+        <span>{label}</span>
+      </Link>
+    );
+  }
   return (
     <Button
       variant="ghost"
@@ -30,7 +48,13 @@ export default function Sidebar() {
       <div className="mb-2 mt-4 px-2 text-[11px] font-bold text-gray-500 tracking-widest">FAVORITES</div>
       <div className="flex flex-col gap-1 mb-6">
         {getPackages().filter(pkg => pkg.favorited).map(pkg => (
-          <SidebarItem key={pkg.id} icon={<Star className="w-5 h-5 text-yellow-400" />} label={pkg.name} small />
+          <SidebarItem
+            key={pkg.id}
+            icon={<Box className="w-5 h-5 text-blue-500" />}
+            label={pkg.name}
+            small
+            to={`/package/${pkg.id}`}
+          />
         ))}
       </div>
       <div className="mt-auto">
