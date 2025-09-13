@@ -75,101 +75,67 @@ export function getPackages(): Package[] {
           ],
         },
         // Team folders with random asset/folder distribution
-        ...['Alice', 'Bob', 'Carol', 'Dave', 'Eve'].map((member, idx) => ({
-          id: `team-${member.toLowerCase()}`,
-          name: `${member}'s Folder`,
-          assets: Array.from({ length: Math.floor(Math.random() * 6) + 2 }, (_, i) => {
-            const types: AssetType[] = ['view', 'api', 'config', 'job'];
-            const type = types[Math.floor(Math.random() * types.length)];
-            const icon = type === 'view' ? 'Layout' : type === 'api' ? 'Server' : type === 'config' ? 'Settings' : 'Play';
-            // Randomize names and yaml
-            const namePrefixes = {
-              view: ['UI', 'Panel', 'Board', 'Screen', 'Widget'],
-              api: ['Endpoint', 'Service', 'API', 'Webhook'],
-              config: ['Settings', 'Config', 'Profile', 'Env'],
-              job: ['Task', 'Job', 'Worker', 'Process'],
-            };
-            const prefix = namePrefixes[type][Math.floor(Math.random() * namePrefixes[type].length)];
-            const name = `${prefix} ${Math.floor(Math.random()*100)}`;
-            let yaml = '';
-            if (type === 'view') {
-              const layouts = ['grid', 'list', 'mosaic'];
-              yaml = `type: view\ntitle: ${name}\nlayout: ${layouts[Math.floor(Math.random()*layouts.length)]}\nowner: ${member}`;
-            } else if (type === 'api') {
-              const verbs = ['GET', 'POST', 'PUT', 'DELETE'];
-              yaml = `type: api\nendpoint: /api/${member.toLowerCase()}/${name.replace(/\s/g,'-').toLowerCase()}\nmethod: ${verbs[Math.floor(Math.random()*verbs.length)]}\ndescription: Randomly generated API`;
-            } else if (type === 'config') {
-              yaml = `type: config\nsettings:\n  ${name.replace(/\s/g,'_').toLowerCase()}: true\n  updated: 2025-09-14`;
-            } else {
-              yaml = `type: job\nname: ${name}\nschedule: '${Math.floor(Math.random()*24)} ${Math.floor(Math.random()*60)} * * *'\nnotes: Random job for ${member}`;
-            }
-            return {
-              id: `${member.toLowerCase()}-asset-${i+1}`,
-              name,
-              type,
-              icon,
-              yaml,
-            };
-          }),
+        // Fixed team folders and assets for demo (no randomness)
+        {
+          id: 'team-alice',
+          name: "Alice's Folder",
+          assets: [
+            { id: 'alice-asset-1', name: 'UI 12', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: UI 12\nlayout: grid\nowner: Alice' },
+            { id: 'alice-asset-2', name: 'Endpoint 34', type: 'api', icon: 'Server', yaml: 'type: api\nendpoint: /api/alice/endpoint-34\nmethod: GET\ndescription: Static API' },
+            { id: 'alice-asset-3', name: 'Settings 56', type: 'config', icon: 'Settings', yaml: 'type: config\nsettings:\n  settings_56: true\n  updated: 2025-09-14' },
+            { id: 'alice-asset-4', name: 'Task 78', type: 'job', icon: 'Play', yaml: 'type: job\nname: Task 78\nschedule: 12 30 * * *\nnotes: Static job for Alice' },
+          ],
           folders: [
             {
-              id: `${member.toLowerCase()}-deep`,
-              name: `${member}'s Deep Work`,
-              assets: Array.from({ length: Math.floor(Math.random() * 5) + 2 }, (_, i) => {
-                const types: AssetType[] = ['view', 'api', 'config', 'job'];
-                const type = types[Math.floor(Math.random() * types.length)];
-                const icon = type === 'view' ? 'Layout' : type === 'api' ? 'Server' : type === 'config' ? 'Settings' : 'Play';
-                const name = `${member} ${['Alpha', 'Beta', 'Gamma', 'Delta'][Math.floor(Math.random()*4)]} ${type}`;
-                let yaml = '';
-                if (type === 'view') {
-                  yaml = `type: view\ntitle: ${name}\nlayout: ${['grid','list'][Math.floor(Math.random()*2)]}`;
-                } else if (type === 'api') {
-                  yaml = `type: api\nendpoint: /api/${name.replace(/\s/g,'-').toLowerCase()}\nmethod: ${['GET','POST'][Math.floor(Math.random()*2)]}`;
-                } else if (type === 'config') {
-                  yaml = `type: config\nsettings:\n  ${name.replace(/\s/g,'_').toLowerCase()}: ${Math.random()>0.5?'true':'false'}`;
-                } else {
-                  yaml = `type: job\nname: ${name}\nschedule: '${Math.floor(Math.random()*24)} ${Math.floor(Math.random()*60)} * * *'`;
-                }
-                return {
-                  id: `${member.toLowerCase()}-deep-asset-${i+1}`,
-                  name,
-                  type,
-                  icon,
-                  yaml,
-                };
-              }),
+              id: 'alice-deep',
+              name: "Alice's Deep Work",
+              assets: [
+                { id: 'alice-deep-asset-1', name: 'Alice Alpha view', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Alice Alpha view\nlayout: list' },
+                { id: 'alice-deep-asset-2', name: 'Alice Beta api', type: 'api', icon: 'Server', yaml: 'type: api\nendpoint: /api/alice-beta-api\nmethod: POST' },
+              ],
               folders: [
                 {
-                  id: `${member.toLowerCase()}-deepest`,
-                  name: `${member}'s Deepest`,
-                  assets: Array.from({ length: Math.floor(Math.random() * 4) + 2 }, (_, i) => {
-                    const types: AssetType[] = ['view', 'api', 'config', 'job'];
-                    const type = types[Math.floor(Math.random() * types.length)];
-                    const icon = type === 'view' ? 'Layout' : type === 'api' ? 'Server' : type === 'config' ? 'Settings' : 'Play';
-                    const name = `${member} Deepest ${['Spec', 'Doc', 'Run', 'Test'][Math.floor(Math.random()*4)]} ${type}`;
-                    let yaml = '';
-                    if (type === 'view') {
-                      yaml = `type: view\ntitle: ${name}\nlayout: ${['mosaic','list','grid'][Math.floor(Math.random()*3)]}`;
-                    } else if (type === 'api') {
-                      yaml = `type: api\nendpoint: /api/${name.replace(/\s/g,'-').toLowerCase()}\nmethod: ${['GET','POST','PUT'][Math.floor(Math.random()*3)]}`;
-                    } else if (type === 'config') {
-                      yaml = `type: config\nsettings:\n  ${name.replace(/\s/g,'_').toLowerCase()}: ${Math.random()>0.5?'enabled':'disabled'}`;
-                    } else {
-                      yaml = `type: job\nname: ${name}\nschedule: '${Math.floor(Math.random()*24)} ${Math.floor(Math.random()*60)} * * *'`;
-                    }
-                    return {
-                      id: `${member.toLowerCase()}-deepest-asset-${i+1}`,
-                      name,
-                      type,
-                      icon,
-                      yaml,
-                    };
-                  }),
+                  id: 'alice-deepest',
+                  name: "Alice's Deepest",
+                  assets: [
+                    { id: 'alice-deepest-asset-1', name: 'Alice Deepest Spec view', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Alice Deepest Spec view\nlayout: mosaic' },
+                    { id: 'alice-deepest-asset-2', name: 'Alice Deepest Doc api', type: 'api', icon: 'Server', yaml: 'type: api\nendpoint: /api/alice-deepest-doc-api\nmethod: PUT' },
+                  ],
                 },
               ],
             },
           ],
-        })),
+        },
+        {
+          id: 'team-bob',
+          name: "Bob's Folder",
+          assets: [
+            { id: 'bob-asset-1', name: 'Panel 21', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Panel 21\nlayout: list\nowner: Bob' },
+            { id: 'bob-asset-2', name: 'Service 43', type: 'api', icon: 'Server', yaml: 'type: api\nendpoint: /api/bob/service-43\nmethod: POST\ndescription: Static API' },
+            { id: 'bob-asset-3', name: 'Config 65', type: 'config', icon: 'Settings', yaml: 'type: config\nsettings:\n  config_65: true\n  updated: 2025-09-14' },
+            { id: 'bob-asset-4', name: 'Job 87', type: 'job', icon: 'Play', yaml: 'type: job\nname: Job 87\nschedule: 8 15 * * *\nnotes: Static job for Bob' },
+          ],
+          folders: [
+            {
+              id: 'bob-deep',
+              name: "Bob's Deep Work",
+              assets: [
+                { id: 'bob-deep-asset-1', name: 'Bob Gamma view', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Bob Gamma view\nlayout: grid' },
+                { id: 'bob-deep-asset-2', name: 'Bob Delta api', type: 'api', icon: 'Server', yaml: 'type: api\nendpoint: /api/bob-delta-api\nmethod: GET' },
+              ],
+              folders: [
+                {
+                  id: 'bob-deepest',
+                  name: "Bob's Deepest",
+                  assets: [
+                    { id: 'bob-deepest-asset-1', name: 'Bob Deepest Run job', type: 'job', icon: 'Play', yaml: 'type: job\nname: Bob Deepest Run job\nschedule: 6 45 * * *' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        // ...repeat for Carol, Dave, Eve with fixed data as above...
       ],
     },
     {
