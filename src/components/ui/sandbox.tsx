@@ -1,28 +1,61 @@
-import * as React from "react";
-
-// Minimal placeholder for shadcn/ui Sandbox component
-// See: https://www.shadcn.io/components/code/sandbox for full implementation
-
 export interface SandboxProps {
   files?: Record<string, { code: string }>;
-  template?: string;
-  theme?: string;
-  showTabs?: boolean;
-  showLineNumbers?: boolean;
-  showInlineErrors?: boolean;
-  showConsole?: boolean;
-  showPreview?: boolean;
-  showFileExplorer?: boolean;
   editorHeight?: string;
   className?: string;
 }
 
-export function Sandbox({ files, template = "react", theme = "dark", showTabs = true, showLineNumbers = true, showInlineErrors = true, showConsole = true, showPreview = true, showFileExplorer = true, editorHeight = "400px", className }: SandboxProps) {
+import MonacoEditor from "@monaco-editor/react";
+
+export function Sandbox({ files, editorHeight = "400px", className }: SandboxProps) {
+  // Get the first file and its code
+  const fileEntry = files ? (Object.entries(files)[0] as [string, { code: string }] | undefined) : undefined;
+  const fileName = fileEntry ? fileEntry[0] : "example.yaml";
+  const code = fileEntry ? fileEntry[1].code : "# No YAML provided";
+
   return (
-    <div className={className} style={{ border: '1px solid #e5e7eb', borderRadius: 8, padding: 24, background: '#18181b', color: '#fff', minHeight: editorHeight }}>
-      <div style={{ fontWeight: 600, marginBottom: 8 }}>Sandbox (placeholder)</div>
-      <div style={{ fontSize: 12, color: '#a1a1aa' }}>This is a placeholder for the shadcn/ui Sandbox component. Replace with the real implementation for full functionality.</div>
-      <pre style={{ marginTop: 16, background: '#27272a', padding: 12, borderRadius: 4, overflow: 'auto' }}>{JSON.stringify(files, null, 2)}</pre>
+    <div
+      className={className}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        height: '100%',
+        minHeight: 0,
+        minWidth: 0,
+        background: '#18181b',
+        color: '#fff',
+        borderRadius: 8,
+        border: '1px solid #e5e7eb',
+      }}
+    >
+      <header
+        style={{
+          fontWeight: 600,
+          fontSize: 18,
+          padding: '16px 24px',
+          borderBottom: '1px solid #23232b',
+          background: '#1e1e23',
+          letterSpacing: 0.5,
+        }}
+      >
+        {fileName}
+      </header>
+      <div style={{ flex: 1, minHeight: 0, minWidth: 0 }}>
+        <MonacoEditor
+          height="100%"
+          width="100%"
+          defaultLanguage="yaml"
+          defaultValue={code}
+          theme="vs-dark"
+          options={{
+            minimap: { enabled: false },
+            fontSize: 14,
+            scrollBeyondLastLine: false,
+            wordWrap: 'on',
+            automaticLayout: true,
+          }}
+        />
+      </div>
     </div>
   );
 }

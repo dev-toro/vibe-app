@@ -30,7 +30,7 @@ function App() {
               <Sidebar />
               {/* Main content area */}
               <div className="flex-1 flex min-h-0 justify-center">
-                <main className="flex-1 w-max mx-auto p-6 overflow-auto">
+                <main className="flex-1 w-max mx-auto overflow-auto">
                   <Routes>
                     <Route path="/listing" element={<Listing />} />
                     <Route path="/package/:id" element={<PackageDetail />} />

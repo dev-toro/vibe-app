@@ -103,7 +103,7 @@ export default function Listing() {
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full p-6">
       <div className="flex flex-col gap-4 w-full">
         {/* Table controls row (filters, sort, etc.) can go here if needed */}
         <div className="w-full overflow-x-auto">
