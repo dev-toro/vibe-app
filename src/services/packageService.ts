@@ -49,19 +49,15 @@ export function getPackages(): Package[] {
             {
               id: 'shared-views',
               name: 'Shared Views',
-              assets: Array.from({ length: 7 }, (_, i) => {
-                const layouts = ['grid', 'list', 'mosaic', 'kanban'];
-                const layout = layouts[Math.floor(Math.random() * layouts.length)];
-                const titles = ['Dashboard', 'Overview', 'Workspace', 'Board', 'Panel', 'Monitor', 'Console'];
-                const title = titles[i % titles.length] + (Math.random() > 0.5 ? ` ${i+1}` : '');
-                return {
-                  id: `shared-view-${i+1}`,
-                  name: `View: ${title}`,
-                  type: 'view',
-                  icon: 'Layout',
-                  yaml: `type: view\ntitle: ${title}\nlayout: ${layout}\ncreated: 2025-09-${10+i}`,
-                };
-              }),
+              assets: [
+                { id: 'shared-view-1', name: 'View: Dashboard', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Dashboard\nlayout: grid\ncreated: 2025-09-10' },
+                { id: 'shared-view-2', name: 'View: Overview', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Overview\nlayout: list\ncreated: 2025-09-11' },
+                { id: 'shared-view-3', name: 'View: Workspace', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Workspace\nlayout: mosaic\ncreated: 2025-09-12' },
+                { id: 'shared-view-4', name: 'View: Board', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Board\nlayout: kanban\ncreated: 2025-09-13' },
+                { id: 'shared-view-5', name: 'View: Panel', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Panel\nlayout: grid\ncreated: 2025-09-14' },
+                { id: 'shared-view-6', name: 'View: Monitor', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Monitor\nlayout: list\ncreated: 2025-09-15' },
+                { id: 'shared-view-7', name: 'View: Console', type: 'view', icon: 'Layout', yaml: 'type: view\ntitle: Console\nlayout: mosaic\ncreated: 2025-09-16' },
+              ],
             },
             {
               id: 'shared-mixed',
