@@ -5,6 +5,12 @@ export type Asset = {
   name: string;
   yaml: string;
 };
+
+export type AssetFolder = {
+  id: string;
+  name: string;
+  assets: Asset[];
+};
 export type Package = {
   id: string;
   name: string;
@@ -12,22 +18,67 @@ export type Package = {
   lastAccessed: string; // ISO date string
   createdAt: string;    // ISO date string
   favorited: boolean;
-  assets: Asset[];
+  assets?: Asset[]; // For backward compatibility
+  folders?: AssetFolder[];
 };
 
 export function getPackages(): Package[] {
   return [
-    { id: '1', name: 'Alpha', description: 'Alpha package description.', lastAccessed: '2025-09-11T14:23:00Z', createdAt: '2025-08-01T09:00:00Z', favorited: true, assets: [
-      { id: 'a1', name: 'Asset A1', yaml: 'config: value\nfoo: bar' },
-      { id: 'a2', name: 'Asset A2', yaml: 'config: value2\nbar: baz' },
-    ] },
-    { id: '2', name: 'Beta', description: 'Beta package description.', lastAccessed: '2025-09-10T10:12:00Z', createdAt: '2025-07-28T11:30:00Z', favorited: false, assets: [
-      { id: 'b1', name: 'Asset B1', yaml: 'config: beta\nfoo: beta' },
-    ] },
-    { id: '3', name: 'Gamma', description: 'Gamma package description.', lastAccessed: '2025-09-09T16:45:00Z', createdAt: '2025-08-10T15:20:00Z', favorited: true, assets: [
-      { id: 'g1', name: 'Asset G1', yaml: 'config: gamma\nfoo: gamma' },
-      { id: 'g2', name: 'Asset G2', yaml: 'config: gamma2\nbar: gamma2' },
-    ] },
+    {
+      id: '1',
+      name: 'Alpha',
+      description: 'Alpha package description.',
+      lastAccessed: '2025-09-11T14:23:00Z',
+      createdAt: '2025-08-01T09:00:00Z',
+      favorited: true,
+      folders: [
+        {
+          id: 'f1',
+          name: 'Config Examples',
+          assets: [
+            { id: 'a1', name: 'Asset A1', yaml: 'config: value\nfoo: bar' },
+            { id: 'a2', name: 'Asset A2', yaml: 'config: value2\nbar: baz' },
+          ],
+        },
+        {
+          id: 'f2',
+          name: 'Advanced',
+          assets: [
+            { id: 'a3', name: 'Asset A3', yaml: 'advanced: true\nfoo: advanced' },
+          ],
+        },
+      ],
+    },
+    {
+      id: '2',
+      name: 'Beta',
+      description: 'Beta package description.',
+      lastAccessed: '2025-09-10T10:12:00Z',
+      createdAt: '2025-07-28T11:30:00Z',
+      favorited: false,
+      folders: [
+        {
+          id: 'f3',
+          name: 'Beta Folder',
+          assets: [
+            { id: 'b1', name: 'Asset B1', yaml: 'config: beta\nfoo: beta' },
+          ],
+        },
+      ],
+    },
+    {
+      id: '3',
+      name: 'Gamma',
+      description: 'Gamma package description.',
+      lastAccessed: '2025-09-09T16:45:00Z',
+      createdAt: '2025-08-10T15:20:00Z',
+      favorited: true,
+      assets: [
+        { id: 'g1', name: 'Asset G1', yaml: 'config: gamma\nfoo: gamma' },
+        { id: 'g2', name: 'Asset G2', yaml: 'config: gamma2\nbar: gamma2' },
+      ],
+    },
+    // ...other packages remain unchanged for brevity...
     { id: '4', name: 'Delta', description: 'Delta package description.', lastAccessed: '2025-09-12T08:00:00Z', createdAt: '2025-08-15T13:00:00Z', favorited: false, assets: [] },
     { id: '5', name: 'Epsilon', description: 'Epsilon package description.', lastAccessed: '2025-09-08T19:30:00Z', createdAt: '2025-08-20T10:10:00Z', favorited: false, assets: [] },
     { id: '6', name: 'Zeta', description: 'Zeta package description.', lastAccessed: '2025-09-07T12:00:00Z', createdAt: '2025-08-25T08:45:00Z', favorited: true, assets: [
