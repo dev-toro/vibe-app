@@ -145,11 +145,17 @@ export default function PackageSidebar() {
       if (node.asset?.type && (assetTypeIcon as any)[node.asset.type]) {
         Icon = (assetTypeIcon as any)[node.asset.type];
       }
+      // Type guard: only set selected asset if it has id, name, yaml
+      const handleAssetClick = (asset: any) => {
+        if (asset && typeof asset.id === 'string' && typeof asset.name === 'string' && typeof asset.yaml === 'string') {
+          setSelectedAsset(asset);
+        }
+      };
       return (
         <button
           key={node.id}
           className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors ${selectedAsset?.id === node.id ? 'bg-blue-100' : ''}`}
-          onClick={() => setSelectedAsset(node.asset)}
+          onClick={() => handleAssetClick(node.asset)}
         >
           <Icon className="w-4 h-4 text-blue-500" />
           <span>{node.name}</span>
@@ -162,21 +168,42 @@ export default function PackageSidebar() {
   return (
     <div className="h-screen flex flex-row bg-[#f7f8fa]">
       {/* Vertical L0 Navigation: one per asset type */}
-      <nav className="flex flex-col items-center py-2 px-0 gap-0.5 w-12 bg-[#f7f8fa] border-r border-gray-200">
-        {ASSET_TYPES.map((item, idx) => (
-          <Button
-            key={item.key}
-            variant="ghost"
-            size="icon"
-            className={`my-1 w-8 h-8 rounded-sm border transition-all flex items-center justify-center ${activeTab === item.key ? 'border-blue-500 bg-white shadow-[0_2px_8px_0_rgba(0,0,0,0.03)] text-blue-700' : 'border-transparent text-blue-900 hover:bg-gray-100'} ${idx === 0 ? 'mt-1' : ''}`}
-            onClick={() => setActiveTab(item.key)}
-            style={activeTab === item.key ? { boxShadow: '0 0 0 2px #6366f1, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
-          >
-            {item.icon}
-            <span className="sr-only">{item.label}</span>
-          </Button>
-        ))}
-        <div className="flex-1" />
+      <nav className="flex flex-col items-center py-2 px-0 gap-0.5 w-12 bg-[#f7f8fa] border-r border-gray-200 h-full">
+        {/* Browse always on top */}
+        <Button
+          key="browse"
+          variant="ghost"
+          size="icon"
+          className={`my-1 w-8 h-8 rounded-sm border transition-all flex items-center justify-center ${activeTab === 'browse' ? 'border-blue-500 bg-white shadow-[0_2px_8px_0_rgba(0,0,0,0.03)] text-blue-700' : 'border-transparent text-blue-900 hover:bg-gray-100'} mt-1`}
+          onClick={() => setActiveTab('browse')}
+          style={activeTab === 'browse' ? { boxShadow: '0 0 0 2px #6366f1, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
+        >
+          <Folder className="w-7 h-7" />
+          <span className="sr-only">Browse</span>
+        </Button>
+        {/* Separator */}
+        <div className="w-6 border-b border-gray-300 my-2" />
+        {/* Asset type tabs, vertically centered, only enabled if assets exist */}
+        <div className="flex-1 flex flex-col justify-center items-center gap-0.5 w-full">
+          {ASSET_TYPES.filter(t => t.key !== 'browse').map((item) => {
+            // Check if there are assets of this type
+            const hasAssets = flattenAssetsByType(pkg, item.key as AssetType).length > 0;
+            return (
+              <Button
+                key={item.key}
+                variant="ghost"
+                size="icon"
+                className={`my-1 w-8 h-8 rounded-sm border transition-all flex items-center justify-center ${activeTab === item.key ? 'border-blue-500 bg-white shadow-[0_2px_8px_0_rgba(0,0,0,0.03)] text-blue-700' : 'border-transparent text-blue-900 hover:bg-gray-100'} ${!hasAssets ? 'opacity-40 pointer-events-none' : ''}`}
+                onClick={() => hasAssets && setActiveTab(item.key)}
+                style={activeTab === item.key ? { boxShadow: '0 0 0 2px #6366f1, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
+                disabled={!hasAssets}
+              >
+                {item.icon}
+                <span className="sr-only">{item.label}</span>
+              </Button>
+            );
+          })}
+        </div>
       </nav>
       {/* L1 Content: flat list of assets by type */}
       <aside className="flex-1 flex flex-col py-4 px-0 min-w-[320px] max-w-[380px] border-r border-gray-200 bg-white">
@@ -228,11 +255,16 @@ export default function PackageSidebar() {
                 if (assets.length === 0) return <div className="text-xs text-gray-400 px-3">No assets</div>;
                 return assets.map((asset: any) => {
                   const Icon = assetTypeIcon[asset.type as AssetType] || Box;
+                  const handleAssetClick = (asset: any) => {
+                    if (asset && typeof asset.id === 'string' && typeof asset.name === 'string' && typeof asset.yaml === 'string') {
+                      setSelectedAsset(asset);
+                    }
+                  };
                   return (
                     <button
                       key={asset.id}
                       className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors ${selectedAsset?.id === asset.id ? 'bg-blue-100' : ''}`}
-                      onClick={() => setSelectedAsset(asset)}
+                      onClick={() => handleAssetClick(asset)}
                     >
                       <Icon className="w-4 h-4 text-blue-500" />
                       <span>{asset.name}</span>
