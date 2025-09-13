@@ -23,14 +23,16 @@ function App() {
     <BrowserRouter>
       <SearchContext.Provider value={{ search, setSearch }}>
         <SelectedAssetContext.Provider value={{ selectedAsset, setSelectedAsset }}>
-          <div className="min-h-screen flex flex-col bg-[#f8f9fb]">
+          <div className="h-screen w-screen flex flex-col bg-[#f8f9fb] overflow-hidden">
             <Navbar />
-            <div className="flex flex-1 min-h-0">
+            <div className="flex flex-1 min-h-0 min-w-0 overflow-hidden">
               {/* Sidebar */}
-              <Sidebar />
+              <div className="h-full">
+                <Sidebar />
+              </div>
               {/* Main content area */}
-              <div className="flex-1 flex min-h-0 justify-center">
-                <main className="flex-1 w-max mx-auto overflow-auto">
+              <div className="flex-1 flex min-h-0 min-w-0 justify-center overflow-hidden h-full">
+                <main className="flex-1 w-max mx-auto overflow-hidden">
                   <Routes>
                     <Route path="/listing" element={<Listing />} />
                     <Route path="/package/:id" element={<PackageDetail />} />
