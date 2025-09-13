@@ -5,6 +5,7 @@ import { getPackageById } from '../services/packageService';
 import { useContext } from 'react';
 import { SelectedAssetContext } from '../components/Sidebar';
 import { Sandbox } from '../components/ui/sandbox';
+import { PackageHome } from '../components/PackageHome';
 
 export default function PackageDetail() {
   const { id } = useParams<{ id: string }>();
@@ -25,11 +26,5 @@ export default function PackageDetail() {
       </div>
     );
   }
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h2 className="text-2xl font-bold mb-4">{pkg.name}</h2>
-      <p className="mb-2 text-gray-500">ID: <span className="font-mono">{pkg.id}</span></p>
-      <p>{pkg.description}</p>
-    </div>
-  );
+  return <PackageHome pkg={pkg} />;
 }
