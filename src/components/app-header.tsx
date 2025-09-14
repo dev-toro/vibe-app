@@ -1,6 +1,4 @@
-
 import { Button } from './ui/button';
-import Breadcrumb from './Breadcrumb';
 import { Input } from './ui/input';
 import * as React from 'react';
 import { SearchContext } from '../App';
@@ -8,8 +6,9 @@ import { SearchIcon } from 'lucide-react';
 import { SelectedAssetContext } from './PackageSidebar';
 
 import { useNavigate } from 'react-router-dom';
+import AppHeaderBreadcrumb from './app-header-breadcrumb';
 
-export default function NavBreadcrumb() {
+export default function AppHeader() {
   const { search, setSearch } = React.useContext(SearchContext);
   // Use context from parent provider (Listing or PackageSidebar)
   const navigate = useNavigate();
@@ -18,7 +17,7 @@ export default function NavBreadcrumb() {
      <div className="flex container w-full relative h-16 items-center gap-2">
         {/* Left: Breadcrumb */}
         <div className="flex items-center gap-2 min-w-0 flex-1">
-          <Breadcrumb
+          <AppHeaderBreadcrumb
             selectedAsset={selectedAsset ? { name: selectedAsset.name } : undefined}
             onBreadcrumbClick={href => {
               if (href.includes('/package/')) {

@@ -1,4 +1,3 @@
-
 import { Button } from './ui/button';
 import Breadcrumb from './Breadcrumb';
 import { Input } from './ui/input';
@@ -9,7 +8,7 @@ import { SelectedAssetContext } from './PackageSidebar';
 
 import { useNavigate } from 'react-router-dom';
 
-export default function NavBreadcrumb() {
+export default function AppHeader() {
   const { search, setSearch } = React.useContext(SearchContext);
   // Use context from parent provider (Listing or PackageSidebar)
   const navigate = useNavigate();

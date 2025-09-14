@@ -6,7 +6,7 @@ import PackageTable from '../components/PackageTable';
 import fuzzysort from 'fuzzysort';
 import { useContext, createContext, useState } from 'react';
 import { SearchContext } from '../App';
-import AppNavbar from '../components/Navbar';
+import AppHeader from '../components/app-header';
 import ListingSidebar from '../components/ListingSidebar';
 import type { SortingState } from '@tanstack/react-table';
 

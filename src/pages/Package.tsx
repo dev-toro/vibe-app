@@ -6,7 +6,7 @@ import { getPackageById } from '../services/packageService';
 import * as React from 'react';
 import PackageSidebar, { SelectedAssetContext, ActiveTabContext } from '../components/PackageSidebar';
 import { PackageRenderer } from '../components/PackageRenderer';
-import AppNavbar from '../components/Navbar';
+import AppHeader from '../components/app-header';
 import type { Asset } from '../services/packageService';
 
 

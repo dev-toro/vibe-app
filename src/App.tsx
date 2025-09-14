@@ -9,7 +9,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import AppNavbar from '@/components/Navbar';
+import AppHeader from './components/app-header';
 
 import Listing from './pages/Listing';
 import PackageDetail from './pages/Package';
@@ -34,7 +34,7 @@ function App() {
                 orientation="vertical"
                 className="mr-2 data-[orientation=vertical]:h-4"
               />
-              <AppNavbar />
+              <AppHeader />
             </div>
           </header>
           <div className="flex flex-1 flex-col gap-4 p-0 pt-0">
