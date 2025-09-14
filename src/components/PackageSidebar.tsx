@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Folder, ChevronDown, ChevronRight, Plus, Search, MoreVertical, Layout, Server, Settings, Play } from 'lucide-react';
+import { Box, Folder, Plus, Search, MoreVertical, Layout, Server, Settings, Play } from 'lucide-react';
 import type { AssetType } from '../services/packageService';
 // Map asset type to icon component
 const assetTypeIcon: Record<AssetType, React.ComponentType<{ className?: string }>> = {
@@ -14,14 +14,10 @@ import { getPackageById } from '../services/packageService';
 import { useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { SelectedAssetContext, ActiveTabContext } from './Sidebar';
+import { TreeRenderer } from './TreeRenderer';
+import type { TreeNode } from './TreeRenderer';
 
-type TreeNode = {
-  id: string;
-  name: string;
-  type: 'folder' | 'asset';
-  children?: TreeNode[];
-  asset?: any;
-};
+
 
 const ASSET_TYPES: { key: string; icon: React.ReactNode; label: string }[] = [
   { key: 'browse', icon: <Folder className="w-7 h-7" />, label: 'Browse' },
@@ -54,9 +50,9 @@ export default function PackageSidebar() {
   const [search, setSearch] = React.useState('');
   const { activeTab, setActiveTab } = useContext(ActiveTabContext);
 
-  // Reset selectedAsset when switching tab (always clear on tab change)
+  // Reset selectedAsset only when leaving 'browse' tab
   React.useEffect(() => {
-    if (selectedAsset) {
+    if (activeTab !== 'browse' && selectedAsset) {
       setSelectedAsset(null);
     }
   }, [activeTab]);
@@ -120,57 +116,7 @@ export default function PackageSidebar() {
     }
   }
 
-  function handleToggle(id: string) {
-    setExpanded(prev => ({ ...prev, [id]: !prev[id] }));
-  }
-
-  function renderTree(nodes: TreeNode[], depth = 0) {
-    return nodes.map(node => {
-      if (node.type === 'folder') {
-        const isOpen = expanded[node.id] || false;
-        return (
-          <div key={node.id} className="ml-2">
-            <button
-              className="flex items-center gap-1 px-1 py-0.5 rounded hover:bg-gray-200 w-full"
-              onClick={() => handleToggle(node.id)}
-              type="button"
-            >
-              {isOpen ? <ChevronDown className="w-4 h-4 text-gray-500" /> : <ChevronRight className="w-4 h-4 text-gray-500" />}
-              <Folder className="w-4 h-4 text-blue-700 mr-1" />
-              <span className="text-[15px] text-gray-800 font-medium">{node.name}</span>
-            </button>
-            {isOpen && node.children && node.children.length > 0 && (
-              <div className="ml-4 border-l border-gray-200 pl-2">
-                {renderTree(node.children, depth + 1)}
-              </div>
-            )}
-          </div>
-        );
-      }
-      // Pick icon based on asset type
-      let Icon = Box;
-      if (node.asset?.type && (assetTypeIcon as any)[node.asset.type]) {
-        Icon = (assetTypeIcon as any)[node.asset.type];
-      }
-      // Type guard: only set selected asset if it has id, name, yaml
-      const handleAssetClick = (asset: any) => {
-        if (asset && typeof asset.id === 'string' && typeof asset.name === 'string' && typeof asset.yaml === 'string') {
-          setSelectedAsset(asset);
-        }
-      };
-      return (
-        <button
-          key={node.id}
-          className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors ${selectedAsset?.id === node.id ? 'bg-blue-100' : ''}`}
-          onClick={() => handleAssetClick(node.asset)}
-        >
-          <Icon className="w-4 h-4 text-blue-500" />
-          <span>{node.name}</span>
-          <MoreVertical className="w-4 h-4 ml-auto text-gray-300 group-hover:text-gray-400" />
-        </button>
-      );
-    });
-  }
+  // TreeRenderer now handles the tree rendering
 
   return (
     <div className="h-screen flex flex-row bg-[#f7f8fa]">
@@ -201,7 +147,7 @@ export default function PackageSidebar() {
                 variant="ghost"
                 size="icon"
                 className={`my-1 w-8 h-8 rounded-sm border transition-all flex items-center justify-center ${activeTab === item.key ? 'border-blue-500 bg-white shadow-[0_2px_8px_0_rgba(0,0,0,0.03)] text-blue-700' : 'border-transparent text-blue-900 hover:bg-gray-100'} ${!hasAssets ? 'opacity-40 pointer-events-none' : ''}`}
-                onClick={() => hasAssets && setActiveTab(item.key)}
+                onClick={() => setActiveTab(item.key)}
                 style={activeTab === item.key ? { boxShadow: '0 0 0 2px #6366f1, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
                 disabled={!hasAssets}
               >
@@ -233,7 +179,17 @@ export default function PackageSidebar() {
               </div>
             </div>
             <div className="flex flex-col gap-1 overflow-y-auto pr-1 px-2" style={{ maxHeight: 'calc(100vh - 210px)' }}>
-              {tree.length > 0 ? renderTree(tree) : <div className="text-xs text-gray-400 px-3">No assets</div>}
+              {tree.length > 0 ? (
+                <TreeRenderer
+                  nodes={tree}
+                  expanded={expanded}
+                  setExpanded={setExpanded}
+                  selectedAsset={selectedAsset}
+                  setSelectedAsset={setSelectedAsset}
+                  assetTypeIcon={assetTypeIcon}
+                  activeTab={activeTab}
+                />
+              ) : <div className="text-xs text-gray-400 px-3">No assets</div>}
             </div>
           </>
         ) : (

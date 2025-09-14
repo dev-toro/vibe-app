@@ -5,6 +5,7 @@ import type { Asset } from '../components/Sidebar';
 
 export function Renderer({ pkg, selectedAsset, activeTab }: { pkg: Package, selectedAsset: Asset | null, activeTab?: string }) {
   // If an L1 experience (not 'browse') is selected, show a placeholder
+  console.log(activeTab, selectedAsset)
   if (activeTab && activeTab !== 'browse') {
     return (
       <div className="flex flex-col items-center justify-center w-full h-full">
