@@ -27,7 +27,7 @@ export default function PackageDetail() {
     <SelectedAssetContext.Provider value={{ selectedAsset, setSelectedAsset }}>
       <ActiveTabContext.Provider value={{ activeTab, setActiveTab }}>
         <div className="flex flex-col h-screen">
-          <AppNavbar />
+
           <div className="flex flex-1">
             <PackageSidebar />
             <PackageRenderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />
