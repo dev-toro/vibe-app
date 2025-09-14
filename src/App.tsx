@@ -27,17 +27,17 @@ function App() {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-            <div className="w-full flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator
-                orientation="vertical"
-                className="mr-2 data-[orientation=vertical]:h-4"
-              />
-              <AppHeader />
-            </div>
+          {/* Header area */}
+          <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <AppHeader />
           </header>
-          <div className="flex flex-1 flex-col gap-4 p-0 pt-0">
+          {/* Main content area */}
+          <div className="flex flex-1 flex-col gap-4 p-0">
             <SearchContext.Provider value={{ search, setSearch }}>
               <div className="h-screen w-screen flex flex-col bg-[#f8f9fb] overflow-hidden">
                 <div className="flex flex-1 min-h-0 min-w-0 overflow-hidden">

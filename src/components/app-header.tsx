@@ -29,7 +29,7 @@ export default function AppHeader() {
             }}
           />
         </div>
-             {/* Center: Search (absolutely centered) */}
+        {/* Center: Search (absolutely centered) */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center pointer-events-none">
           <div className="relative w-full max-w-xs pointer-events-auto">
             <Input

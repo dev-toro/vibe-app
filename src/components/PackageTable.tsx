@@ -19,7 +19,7 @@ function NameCell({ row, onToggleFavorite }: { row: any; onToggleFavorite: (id: 
   const pkg = row.original;
   return (
     <span className="flex items-center gap-2">
-      <Box className="w-4 h-4 text-blue-500" aria-label="package icon" />
+      <Box className="w-4 h-4" aria-label="package icon" />
       {pkg.name}
       {pkg.favorited && <Star className="w-4 h-4 text-yellow-400 ml-1" fill="#facc15" />}
       <DropdownMenu>

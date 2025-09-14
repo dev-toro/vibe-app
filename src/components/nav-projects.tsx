@@ -1,20 +1,15 @@
 "use client"
 
+
 import {
   Folder,
   MoreHorizontal,
   Share,
   Trash2,
-  type LucideIcon,
+  Box,
 } from "lucide-react"
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -23,29 +18,25 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from "./ui/sidebar"
 
-export function NavProjects({
-  projects,
-}: {
-  projects: {
-    name: string
-    url: string
-    icon: LucideIcon
-  }[]
-}) {
+import { getPackages } from "../services/packageService"
+
+export function NavProjects() {
   const { isMobile } = useSidebar()
+  // Get favorite packages
+  const favoritePackages = getPackages().filter(pkg => pkg.favorited)
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Projects</SidebarGroupLabel>
+      <SidebarGroupLabel>Starred</SidebarGroupLabel>
       <SidebarMenu>
-        {projects.map((item) => (
-          <SidebarMenuItem key={item.name}>
+        {favoritePackages.map((pkg) => (
+          <SidebarMenuItem key={pkg.id}>
             <SidebarMenuButton asChild>
-              <a href={item.url}>
-                <item.icon />
-                <span>{item.name}</span>
+              <a href={`/package/${pkg.id}`}>
+                <Box/>
+                <span>{pkg.name}</span>
               </a>
             </SidebarMenuButton>
             <DropdownMenu>
@@ -62,16 +53,16 @@ export function NavProjects({
               >
                 <DropdownMenuItem>
                   <Folder className="text-muted-foreground" />
-                  <span>View Project</span>
+                  <span>View Package</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Share className="text-muted-foreground" />
-                  <span>Share Project</span>
+                  <span>Share Package</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <Trash2 className="text-muted-foreground" />
-                  <span>Delete Project</span>
+                  <span>Delete Package</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

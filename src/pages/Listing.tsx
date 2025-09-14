@@ -6,8 +6,6 @@ import PackageTable from '../components/PackageTable';
 import fuzzysort from 'fuzzysort';
 import { useContext, createContext, useState } from 'react';
 import { SearchContext } from '../App';
-import AppHeader from '../components/app-header';
-import ListingSidebar from '../components/ListingSidebar';
 import type { SortingState } from '@tanstack/react-table';
 
 
@@ -34,24 +32,15 @@ export default function Listing() {
   };
 
   return (
-    
-    
     <SelectedAssetContext.Provider value={{ selectedAsset, setSelectedAsset }}>
-      <div className="flex flex-col h-screen">
-        <div className="w-full flex flex-1">
-          <ListingSidebar />
-          <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-           {/* Table controls row (filters, sort, etc.) can go here if needed */}
-              <PackageTable
-                packages={filteredPackages}
-                sorting={sorting}
-                setSorting={setSorting}
-                onToggleFavorite={onToggleFavorite}
-              />
-         </div>
-          
-          
-        </div>
+      <div className="p-2">
+         {/* Table controls row (filters, sort, etc.) can go here if needed */}
+          <PackageTable
+            packages={filteredPackages}
+            sorting={sorting}
+            setSorting={setSorting}
+            onToggleFavorite={onToggleFavorite}
+          />
       </div>
     </SelectedAssetContext.Provider>
   );
