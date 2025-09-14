@@ -151,8 +151,6 @@ export default function PackageSidebar() {
           <Folder className="w-7 h-7" />
           <span className="sr-only">Browse</span>
         </Button>
-        {/* Separator */}
-        <div className="w-6 border-b border-gray-300 my-2" />
         {/* Asset type tabs, vertically centered, only enabled if assets exist */}
         <div className="flex-1 flex flex-col justify-center items-center gap-0.5 w-full">
           {ASSET_TYPES.filter(t => t.key !== 'browse').map((item) => {
