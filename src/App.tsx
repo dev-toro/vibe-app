@@ -37,19 +37,17 @@ function App() {
             <AppHeader />
           </header>
           {/* Main content area */}
-          <div className="flex flex-1 flex-col gap-4 p-0">
+          <div className="flex flex-1 flex-col gap-4 p-0 min-h-0 min-w-0">
             <SearchContext.Provider value={{ search, setSearch }}>
-              <div className="h-screen w-screen flex flex-col bg-[#f8f9fb] overflow-hidden">
+              <div className="flex flex-1 flex-col bg-[#f8f9fb] min-h-0 min-w-0 overflow-hidden">
                 <div className="flex flex-1 min-h-0 min-w-0 overflow-hidden">
-                  <div className="flex-1 flex min-h-0 min-w-0 justify-center overflow-hidden h-full">
-                    <main className="flex-1 w-max mx-auto overflow-hidden">
-                      <Routes>
-                        <Route path="/listing" element={<Listing />} />
-                        <Route path="/package/:id" element={<PackageDetail />} />
-                        <Route path="*" element={<Navigate to="/listing" replace />} />
-                      </Routes>
-                    </main>
-                  </div>
+                  <main className="flex-1 min-h-0 min-w-0 w-full mx-auto overflow-auto">
+                    <Routes>
+                      <Route path="/listing" element={<Listing />} />
+                      <Route path="/package/:id" element={<PackageDetail />} />
+                      <Route path="*" element={<Navigate to="/listing" replace />} />
+                    </Routes>
+                  </main>
                 </div>
               </div>
             </SearchContext.Provider>
