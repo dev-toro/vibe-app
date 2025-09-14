@@ -37,7 +37,7 @@ export function AssetTreeRenderer({ nodes, expanded, setExpanded, selectedAsset,
             >
               {isOpen ? <ChevronDown className="w-4 h-4 text-black" /> : <ChevronRight className="w-4 h-4 text-black" />}
               <Folder className="w-4 h-4 text-black mr-1" />
-              <span className="text-[15px] text-black font-medium">{node.name}</span>
+              <span className="text-black">{node.name}</span>
             </button>
             {isOpen && node.children && node.children.length > 0 && (
               <div className="ml-4 border-l border-gray-200 pl-2">
@@ -59,7 +59,7 @@ export function AssetTreeRenderer({ nodes, expanded, setExpanded, selectedAsset,
       return (
         <button
           key={node.id}
-          className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] text-black hover:bg-gray-100 font-normal transition-colors ${selectedAsset?.id === node.id ? 'bg-gray-200' : ''}`}
+          className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-black hover:bg-gray-100 transition-colors ${selectedAsset?.id === node.id ? 'bg-gray-200' : ''}`}
           onClick={() => handleAssetClick(node.asset)}
           disabled={activeTab !== 'browse'}
         >
