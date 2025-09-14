@@ -2,7 +2,7 @@
 import { Box, Folder, Plus, Search, MoreVertical, Layout, Server, Settings, Play } from 'lucide-react';
 import type { AssetType } from '../services/packageService';
 // Map asset type to icon component
-const assetTypeIcon: Record<AssetType, React.ComponentType<{ className?: string }>> = {
+const assetTypeIcon: Record<AssetType, import('lucide-react').LucideIcon> = {
   view: Layout,
   api: Server,
   config: Settings,
@@ -62,7 +62,6 @@ export default function PackageSidebar() {
 
 
 
-  // State for expanded folders
   const [expanded, setExpanded] = React.useState<{ [id: string]: boolean }>({});
   const [search, setSearch] = React.useState('');
   const { activeTab, setActiveTab } = useContext(ActiveTabContext);
@@ -136,17 +135,17 @@ export default function PackageSidebar() {
   // TreeRenderer now handles the tree rendering
 
   return (
-    <div className="h-screen flex flex-row bg-[#f7f8fa]">
+    <div className="h-screen flex flex-row">
       {/* Vertical L0 Navigation: one per asset type */}
-      <nav className="flex flex-col items-center py-2 px-0 gap-0.5 w-12 bg-[#f7f8fa] border-r border-gray-200 h-full">
+      <nav className="flex flex-col items-center py-2 px-0 gap-0.5 w-12 border-r border-gray-200 h-full">
         {/* Browse always on top */}
         <Button
           key="browse"
           variant="ghost"
           size="icon"
-          className={`my-1 w-8 h-8 rounded-sm border transition-all flex items-center justify-center ${activeTab === 'browse' ? 'border-blue-500 bg-white shadow-[0_2px_8px_0_rgba(0,0,0,0.03)] text-blue-700' : 'border-transparent text-blue-900 hover:bg-gray-100'} mt-1`}
+          className={`my-1 w-8 h-8 rounded-sm border transition-all flex items-center justify-center ${activeTab === 'browse' ? 'border-black text-black shadow-[0_2px_8px_0_rgba(0,0,0,0.03)] ' : 'border-transparent text-gray-700 hover:bg-gray-100 hover:text-black'} mt-1`}
           onClick={() => setActiveTab('browse')}
-          style={activeTab === 'browse' ? { boxShadow: '0 0 0 2px #6366f1, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
+          style={activeTab === 'browse' ? { boxShadow: '0 0 0 2px #222, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
         >
           <Folder className="w-7 h-7" />
           <span className="sr-only">Browse</span>
@@ -161,9 +160,9 @@ export default function PackageSidebar() {
                 key={item.key}
                 variant="ghost"
                 size="icon"
-                className={`my-1 w-8 h-8 rounded-sm border transition-all flex items-center justify-center ${activeTab === item.key ? 'border-blue-500 bg-white shadow-[0_2px_8px_0_rgba(0,0,0,0.03)] text-blue-700' : 'border-transparent text-blue-900 hover:bg-gray-100'} ${!hasAssets ? 'opacity-40 pointer-events-none' : ''}`}
+                className={`my-1 w-8 h-8 rounded-sm border transition-all flex items-center justify-center ${activeTab === item.key ? 'border-black text-black shadow-[0_2px_8px_0_rgba(0,0,0,0.03)]' : 'border-transparent text-gray-700 hover:bg-gray-100 hover:text-black'} ${!hasAssets ? 'opacity-40 pointer-events-none' : ''}`}
                 onClick={() => setActiveTab(item.key)}
-                style={activeTab === item.key ? { boxShadow: '0 0 0 2px #6366f1, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
+                style={activeTab === item.key ? { boxShadow: '0 0 0 2px #222, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
                 disabled={!hasAssets}
               >
                 {item.icon}
@@ -174,13 +173,13 @@ export default function PackageSidebar() {
         </div>
       </nav>
       {/* L1 Content: flat list of assets by type */}
-      <aside className="flex-1 flex flex-col py-4 px-0 min-w-[320px] max-w-[380px] border-r border-gray-200 bg-white">
+      <aside className="flex-1 flex flex-col py-4 px-0 min-w-[280px] max-w-[380px] border-r border-gray-200">
         {activeTab === 'browse' ? (
           <>
             <div className="flex items-center gap-2 mb-2 px-4">
               <span className="font-semibold text-[16px] text-gray-900">Browse Assets</span>
               <div className="flex-1" />
-              <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-blue-600" /></Button>
+              <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-gray-900" /></Button>
             </div>
             <div className="flex items-center gap-2 mb-3 px-4">
               <div className="relative w-full">
@@ -193,7 +192,7 @@ export default function PackageSidebar() {
                 <Search className="absolute left-2 top-2.5 w-4 h-4 text-gray-400" />
               </div>
             </div>
-            <div className="flex flex-col gap-1 overflow-y-auto pr-1 px-2" style={{ maxHeight: 'calc(100vh - 210px)' }}>
+            <div className="flex flex-col gap-1 overflow-y-auto overflow-x-scroll-auto pr-1 px-2" style={{ maxHeight: 'calc(100vh - 210px)' }}>
               {tree.length > 0 ? (
                 <AssetTreeRenderer
                   nodes={tree}
@@ -212,7 +211,7 @@ export default function PackageSidebar() {
             <div className="flex items-center gap-2 mb-2 px-4">
               <span className="font-semibold text-[16px] text-gray-900">{ASSET_TYPES.find(t => t.key === activeTab)?.label} Assets</span>
               <div className="flex-1" />
-              <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-blue-600" /></Button>
+              <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-gray-900" /></Button>
             </div>
             <div className="flex items-center gap-2 mb-3 px-4">
               <div className="relative w-full">
@@ -241,12 +240,12 @@ export default function PackageSidebar() {
                   return (
                     <button
                       key={asset.id}
-                      className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors ${selectedAsset?.id === asset.id ? 'bg-blue-100' : ''}`}
+                      className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] hover:bg-gray-100 font-normal transition-colors ${selectedAsset?.id === asset.id ? 'bg-gray-200 text-black' : 'text-gray-800'}`}
                       onClick={() => handleAssetClick(asset)}
                     >
-                      <Icon className="w-4 h-4 text-blue-500" />
+                      <Icon className={`w-4 h-4 ${selectedAsset?.id === asset.id ? 'text-black' : 'text-gray-700 group-hover:text-black'}`} />
                       <span>{asset.name}</span>
-                      <MoreVertical className="w-4 h-4 ml-auto text-gray-300 group-hover:text-gray-400" />
+                      <MoreVertical className="w-4 h-4 ml-auto text-gray-400 group-hover:text-black" />
                     </button>
                   );
                 });

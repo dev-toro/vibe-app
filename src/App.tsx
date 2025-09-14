@@ -28,7 +28,7 @@ function App() {
         <AppSidebar />
         <SidebarInset>
           {/* Header area */}
-          <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <header className="flex h-12 shrink-0 items-center gap-2 border-b px-4 bg-[#f8f9fb] transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
             <SidebarTrigger className="-ml-1" />
             <Separator
               orientation="vertical"

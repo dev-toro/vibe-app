@@ -14,7 +14,7 @@ export default function AppHeader() {
   const navigate = useNavigate();
   const { selectedAsset, setSelectedAsset } = React.useContext(SelectedAssetContext);
   return (
-     <div className="flex container w-full relative h-16 items-center gap-2">
+     <div className="flex container w-full relative h-12 items-center gap-2">
         {/* Left: Breadcrumb */}
         <div className="flex items-center gap-2 min-w-0 flex-1">
           <AppHeaderBreadcrumb

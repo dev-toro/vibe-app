@@ -35,9 +35,9 @@ export function AssetTreeRenderer({ nodes, expanded, setExpanded, selectedAsset,
               onClick={() => handleToggle(node.id)}
               type="button"
             >
-              {isOpen ? <ChevronDown className="w-4 h-4 text-gray-500" /> : <ChevronRight className="w-4 h-4 text-gray-500" />}
-              <Folder className="w-4 h-4 text-blue-700 mr-1" />
-              <span className="text-[15px] text-gray-800 font-medium">{node.name}</span>
+              {isOpen ? <ChevronDown className="w-4 h-4 text-black" /> : <ChevronRight className="w-4 h-4 text-black" />}
+              <Folder className="w-4 h-4 text-black mr-1" />
+              <span className="text-[15px] text-black font-medium">{node.name}</span>
             </button>
             {isOpen && node.children && node.children.length > 0 && (
               <div className="ml-4 border-l border-gray-200 pl-2">
@@ -59,13 +59,13 @@ export function AssetTreeRenderer({ nodes, expanded, setExpanded, selectedAsset,
       return (
         <button
           key={node.id}
-          className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] text-blue-900 hover:bg-[#e9eaf0] font-normal transition-colors ${selectedAsset?.id === node.id ? 'bg-blue-100' : ''}`}
+          className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] text-black hover:bg-gray-100 font-normal transition-colors ${selectedAsset?.id === node.id ? 'bg-gray-200' : ''}`}
           onClick={() => handleAssetClick(node.asset)}
           disabled={activeTab !== 'browse'}
         >
-          <Icon className="w-4 h-4 text-blue-500" />
+          <Icon className="w-4 h-4 text-black" />
           <span>{node.name}</span>
-          <MoreVertical className="w-4 h-4 ml-auto text-gray-300 group-hover:text-gray-400" />
+          <MoreVertical className="w-4 h-4 ml-auto text-black group-hover:text-black" />
         </button>
       );
     });
