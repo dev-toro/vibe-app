@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Folder, ChevronDown, ChevronRight, Plus, Search, MoreVertical, ListChecks, LayoutGrid, Plus as PlusIcon, Package2, Lightbulb, Search as SearchIcon, Layout, Server, Settings, Play } from 'lucide-react';
+import { Box, Folder, ChevronDown, ChevronRight, Plus, Search, MoreVertical, Layout, Server, Settings, Play } from 'lucide-react';
 import type { AssetType } from '../services/packageService';
 // Map asset type to icon component
 const assetTypeIcon: Record<AssetType, React.ComponentType<{ className?: string }>> = {
@@ -13,7 +13,7 @@ import { Input } from './ui/input';
 import { getPackageById } from '../services/packageService';
 import { useLocation } from 'react-router-dom';
 import { useContext } from 'react';
-import { SelectedAssetContext } from './Sidebar';
+import { SelectedAssetContext, ActiveTabContext } from './Sidebar';
 
 type TreeNode = {
   id: string;
@@ -52,7 +52,14 @@ export default function PackageSidebar() {
   // State for expanded folders
   const [expanded, setExpanded] = React.useState<{ [id: string]: boolean }>({});
   const [search, setSearch] = React.useState('');
-  const [activeTab, setActiveTab] = React.useState<string>('browse');
+  const { activeTab, setActiveTab } = useContext(ActiveTabContext);
+
+  // Reset selectedAsset when switching tab (always clear on tab change)
+  React.useEffect(() => {
+    if (selectedAsset) {
+      setSelectedAsset(null);
+    }
+  }, [activeTab]);
 
   // Helper: flatten all assets of a given type from folders and subfolders
   function flattenAssetsByType(pkg: any, type: AssetType): any[] {
