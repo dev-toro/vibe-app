@@ -5,9 +5,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import * as React from 'react';
 import Listing from './pages/Listing';
 import PackageDetail from './pages/Package';
-import AppNavbar from './components/Navbar';
-
-
 
 export const SearchContext = React.createContext<{
   search: string;
@@ -21,7 +18,6 @@ function App() {
     <BrowserRouter>
       <SearchContext.Provider value={{ search, setSearch }}>
         <div className="h-screen w-screen flex flex-col bg-[#f8f9fb] overflow-hidden">
-          <AppNavbar />
           <div className="flex flex-1 min-h-0 min-w-0 overflow-hidden">
             <div className="flex-1 flex min-h-0 min-w-0 justify-center overflow-hidden h-full">
               <main className="flex-1 w-max mx-auto overflow-hidden">

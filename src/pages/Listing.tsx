@@ -24,6 +24,8 @@ import {
 } from '@tanstack/react-table';
 import type { SortingState } from '@tanstack/react-table';
 import ListingSidebar from '../components/ListingSidebar';
+import AppNavbar from '../components/Navbar';
+import { createContext, useState } from 'react';
 
 
 const columnHelper = createColumnHelper<Package>();
@@ -76,11 +78,19 @@ const columns = [
 
 
 
+
+// Minimal context for selectedAsset in Listing
+const SelectedAssetContext = createContext({
+  selectedAsset: null,
+  setSelectedAsset: (_: any) => {},
+});
+
 export default function Listing() {
   const navigate = useNavigate();
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const { search } = useContext(SearchContext);
-  const [packages, setPackages] = React.useState(() => getPackages());
+  const [packages, setPackages] = useState(() => getPackages());
+  const [selectedAsset, setSelectedAsset] = useState<any>(null);
   const allPackages = packages;
   const filteredPackages = React.useMemo(() => {
     if (!search.trim()) return allPackages;
@@ -105,60 +115,65 @@ export default function Listing() {
   });
 
   return (
-    <div className="w-full h-screen flex">
-      <ListingSidebar />
-      <div className="flex-1 p-6 overflow-auto">
-        <div className="flex flex-col gap-4 w-full">
-          {/* Table controls row (filters, sort, etc.) can go here if needed */}
-          <div className="w-full overflow-x-auto">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map(headerGroup => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map(header => (
-                      <TableHead
-                        key={header.id}
-                        className={header.column.getCanSort() ? 'cursor-pointer select-none' : ''}
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        {flexRender(header.column.columnDef.header, header.getContext())}
-                        {header.column.getCanSort() && (
-                          <span className="ml-1">
-                            {header.column.getIsSorted() === 'asc' ? '▲' : header.column.getIsSorted() === 'desc' ? '▼' : ''}
-                          </span>
-                        )}
-                      </TableHead>
+    <SelectedAssetContext.Provider value={{ selectedAsset, setSelectedAsset }}>
+      <div className="flex flex-col h-screen">
+        <AppNavbar />
+        <div className="w-full flex flex-1">
+          <ListingSidebar />
+          <div className="flex-1 p-6 overflow-auto">
+            <div className="flex flex-col gap-4 w-full">
+              {/* Table controls row (filters, sort, etc.) can go here if needed */}
+              <div className="w-full overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    {table.getHeaderGroups().map(headerGroup => (
+                      <TableRow key={headerGroup.id}>
+                        {headerGroup.headers.map(header => (
+                          <TableHead
+                            key={header.id}
+                            className={header.column.getCanSort() ? 'cursor-pointer select-none' : ''}
+                            onClick={header.column.getToggleSortingHandler()}
+                          >
+                            {flexRender(header.column.columnDef.header, header.getContext())}
+                            {header.column.getCanSort() && (
+                              <span className="ml-1">
+                                {header.column.getIsSorted() === 'asc' ? '▲' : header.column.getIsSorted() === 'desc' ? '▼' : ''}
+                              </span>
+                            )}
+                          </TableHead>
+                        ))}
+                      </TableRow>
                     ))}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows.length ? (
-                  table.getRowModel().rows.map(row => (
-                    <TableRow
-                      key={row.id}
-                      className="cursor-pointer hover:bg-blue-50"
-                      onClick={() => navigate(`/package/${row.original.id}`)}
-                    >
-                      {row.getVisibleCells().map(cell => (
-                        <TableCell key={cell.id}>
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableHeader>
+                  <TableBody>
+                    {table.getRowModel().rows.length ? (
+                      table.getRowModel().rows.map(row => (
+                        <TableRow
+                          key={row.id}
+                          className="cursor-pointer hover:bg-blue-50"
+                          onClick={() => navigate(`/package/${row.original.id}`)}
+                        >
+                          {row.getVisibleCells().map(cell => (
+                            <TableCell key={cell.id}>
+                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={columns.length} className="text-center text-gray-400 py-8">
+                          No packages found.
                         </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={columns.length} className="text-center text-gray-400 py-8">
-                      No packages found.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </SelectedAssetContext.Provider>
   );
 }

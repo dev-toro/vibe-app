@@ -15,11 +15,7 @@ import { useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 // Contexts moved from Sidebar.tsx
 import * as React from 'react';
-export type Asset = {
-  id: string;
-  name: string;
-  yaml: string;
-};
+import type { Asset } from '../services/packageService';
 export type SelectedAssetContextType = {
   selectedAsset: Asset | null;
   setSelectedAsset: (asset: Asset | null) => void;

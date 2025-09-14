@@ -6,6 +6,7 @@ import { getPackageById } from '../services/packageService';
 import * as React from 'react';
 import PackageSidebar, { SelectedAssetContext, ActiveTabContext } from '../components/PackageSidebar';
 import { PackageRenderer } from '../components/PackageRenderer';
+import AppNavbar from '../components/Navbar';
 import type { Asset } from '../services/packageService';
 
 
@@ -25,9 +26,12 @@ export default function PackageDetail() {
   return (
     <SelectedAssetContext.Provider value={{ selectedAsset, setSelectedAsset }}>
       <ActiveTabContext.Provider value={{ activeTab, setActiveTab }}>
-        <div className="flex h-screen">
-          <PackageSidebar />
-          <PackageRenderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />
+        <div className="flex flex-col h-screen">
+          <AppNavbar />
+          <div className="flex flex-1">
+            <PackageSidebar />
+            <PackageRenderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />
+          </div>
         </div>
       </ActiveTabContext.Provider>
     </SelectedAssetContext.Provider>

@@ -5,15 +5,31 @@ import { Input } from './ui/input';
 import * as React from 'react';
 import { SearchContext } from '../App';
 import { SearchIcon } from 'lucide-react';
+import { SelectedAssetContext } from './PackageSidebar';
+
+import { useNavigate } from 'react-router-dom';
 
 export default function AppNavbar() {
   const { search, setSearch } = React.useContext(SearchContext);
+  // Use context from parent provider (Listing or PackageSidebar)
+  const navigate = useNavigate();
+  const { selectedAsset, setSelectedAsset } = React.useContext(SelectedAssetContext);
   return (
     <header className="top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 [&_*]:no-underline">
       <nav className="container mx-auto relative flex h-16 max-w-screen-2xl items-center gap-2">
         {/* Left: Breadcrumb */}
         <div className="flex items-center gap-2 min-w-0 flex-1">
-          <Breadcrumb />
+          <Breadcrumb
+            selectedAsset={selectedAsset ? { name: selectedAsset.name } : undefined}
+            onBreadcrumbClick={href => {
+              if (href.includes('/package/')) {
+                setSelectedAsset && setSelectedAsset(null);
+                navigate(href);
+              } else {
+                window.location.href = href;
+              }
+            }}
+          />
         </div>
         {/* Center: Search (absolutely centered) */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex justify-center pointer-events-none">
