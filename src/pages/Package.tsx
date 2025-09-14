@@ -4,8 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getPackageById } from '../services/packageService';
 import { useContext } from 'react';
 import { SelectedAssetContext } from '../components/Sidebar';
-import { Sandbox } from '../components/ui/sandbox';
-import { PackageHome } from '../components/PackageHome';
+import { Renderer } from '../components/Renderer';
 
 export default function PackageDetail() {
   const { id } = useParams<{ id: string }>();
@@ -19,12 +18,5 @@ export default function PackageDetail() {
       </div>
     );
   }
-  if (selectedAsset) {
-    return (
-      <div className="flex flex-col items-center justify-center w-full h-full">
-        <Sandbox files={{ [selectedAsset.name + '.yaml']: { code: selectedAsset.yaml } }} />
-      </div>
-    );
-  }
-  return <PackageHome pkg={pkg} />;
+  return <Renderer pkg={pkg} selectedAsset={selectedAsset} />;
 }
