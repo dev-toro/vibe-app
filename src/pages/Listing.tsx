@@ -1,6 +1,12 @@
-import { Box, MoreVertical, Star } from 'lucide-react';
+// Extend TableMeta for @tanstack/react-table to include onToggleFavorite
+declare module '@tanstack/react-table' {
+  interface TableMeta {
+    onToggleFavorite: (id: string) => void;
+  }
+}
 
 import * as React from 'react';
+import { Box, MoreVertical, Star } from 'lucide-react';
 import { getPackages } from '../services/packageService';
 import fuzzysort from 'fuzzysort';
 import type { Package } from '../services/packageService';
@@ -17,12 +23,7 @@ import {
   createColumnHelper,
 } from '@tanstack/react-table';
 import type { SortingState } from '@tanstack/react-table';
-
-declare module '@tanstack/react-table' {
-  interface TableMeta<TData extends object> {
-    onToggleFavorite: (id: string) => void;
-  }
-}
+import ListingSidebar from '../components/ListingSidebar';
 
 
 const columnHelper = createColumnHelper<Package>();
@@ -74,6 +75,7 @@ const columns = [
 ];
 
 
+
 export default function Listing() {
   const navigate = useNavigate();
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -103,55 +105,58 @@ export default function Listing() {
   });
 
   return (
-    <div className="w-full h-full p-6">
-      <div className="flex flex-col gap-4 w-full">
-        {/* Table controls row (filters, sort, etc.) can go here if needed */}
-        <div className="w-full overflow-x-auto">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map(headerGroup => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map(header => (
-                    <TableHead
-                      key={header.id}
-                      className={header.column.getCanSort() ? 'cursor-pointer select-none' : ''}
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {flexRender(header.column.columnDef.header, header.getContext())}
-                      {header.column.getCanSort() && (
-                        <span className="ml-1">
-                          {header.column.getIsSorted() === 'asc' ? '▲' : header.column.getIsSorted() === 'desc' ? '▼' : ''}
-                        </span>
-                      )}
-                    </TableHead>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.length ? (
-                table.getRowModel().rows.map(row => (
-                  <TableRow
-                    key={row.id}
-                    className="cursor-pointer hover:bg-blue-50"
-                    onClick={() => navigate(`/package/${row.original.id}`)}
-                  >
-                    {row.getVisibleCells().map(cell => (
-                      <TableCell key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
+    <div className="w-full h-screen flex">
+      <ListingSidebar />
+      <div className="flex-1 p-6 overflow-auto">
+        <div className="flex flex-col gap-4 w-full">
+          {/* Table controls row (filters, sort, etc.) can go here if needed */}
+          <div className="w-full overflow-x-auto">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map(headerGroup => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map(header => (
+                      <TableHead
+                        key={header.id}
+                        className={header.column.getCanSort() ? 'cursor-pointer select-none' : ''}
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {header.column.getCanSort() && (
+                          <span className="ml-1">
+                            {header.column.getIsSorted() === 'asc' ? '▲' : header.column.getIsSorted() === 'desc' ? '▼' : ''}
+                          </span>
+                        )}
+                      </TableHead>
                     ))}
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="text-center text-gray-400 py-8">
-                    No packages found.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows.length ? (
+                  table.getRowModel().rows.map(row => (
+                    <TableRow
+                      key={row.id}
+                      className="cursor-pointer hover:bg-blue-50"
+                      onClick={() => navigate(`/package/${row.original.id}`)}
+                    >
+                      {row.getVisibleCells().map(cell => (
+                        <TableCell key={cell.id}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} className="text-center text-gray-400 py-8">
+                      No packages found.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
       </div>
     </div>

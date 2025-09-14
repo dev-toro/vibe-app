@@ -5,11 +5,11 @@ import type { Asset } from '../components/Sidebar';
 
 export function PackageRenderer({ pkg, selectedAsset, activeTab }: { pkg: Package, selectedAsset: Asset | null, activeTab?: string }) {
   // If an L1 experience (not 'browse') is selected, show a placeholder
-  console.log(activeTab, selectedAsset)
-  if (activeTab && activeTab !== 'browse') {
+  console.log("activeTab", activeTab)
+  if (activeTab !== 'browse') {
     return (
       <div className="flex flex-col items-center justify-center w-full h-full">
-        <div className="text-2xl text-gray-400 font-semibold">{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} experience coming soon...</div>
+        <div className="text-2xl text-gray-400 font-semibold">{activeTab ? (activeTab.charAt(0).toUpperCase() + activeTab.slice(1)) : ''} experience coming soon...</div>
       </div>
     );
   }

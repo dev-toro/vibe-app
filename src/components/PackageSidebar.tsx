@@ -1,4 +1,4 @@
-import * as React from 'react';
+// import * as React from 'react';
 import { Box, Folder, Plus, Search, MoreVertical, Layout, Server, Settings, Play } from 'lucide-react';
 import type { AssetType } from '../services/packageService';
 // Map asset type to icon component
@@ -13,7 +13,28 @@ import { Input } from './ui/input';
 import { getPackageById } from '../services/packageService';
 import { useLocation } from 'react-router-dom';
 import { useContext } from 'react';
-import { SelectedAssetContext, ActiveTabContext } from './Sidebar';
+// Contexts moved from Sidebar.tsx
+import * as React from 'react';
+export type Asset = {
+  id: string;
+  name: string;
+  yaml: string;
+};
+export type SelectedAssetContextType = {
+  selectedAsset: Asset | null;
+  setSelectedAsset: (asset: Asset | null) => void;
+};
+export const SelectedAssetContext = React.createContext<SelectedAssetContextType>({
+  selectedAsset: null,
+  setSelectedAsset: () => {},
+});
+export const ActiveTabContext = React.createContext<{
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
+}>({
+  activeTab: 'browse',
+  setActiveTab: () => {},
+});
 import { AssetTreeRenderer } from './TreeRenderer';
 import type { TreeNode } from './TreeRenderer';
 

@@ -1,12 +1,11 @@
 
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+
+import * as React from 'react';
 import Listing from './pages/Listing';
 import PackageDetail from './pages/Package';
 import AppNavbar from './components/Navbar';
-import AppSidebar, { SelectedAssetContext } from './components/Sidebar';
-import type { Asset } from './components/Sidebar';
-import * as React from 'react';
 
 
 
@@ -18,31 +17,23 @@ export const SearchContext = React.createContext<{
 
 function App() {
   const [search, setSearch] = React.useState('');
-  const [selectedAsset, setSelectedAsset] = React.useState<Asset | null>(null);
   return (
     <BrowserRouter>
       <SearchContext.Provider value={{ search, setSearch }}>
-        <SelectedAssetContext.Provider value={{ selectedAsset, setSelectedAsset }}>
-          <div className="h-screen w-screen flex flex-col bg-[#f8f9fb] overflow-hidden">
-            <AppNavbar />
-            <div className="flex flex-1 min-h-0 min-w-0 overflow-hidden">
-              {/* Sidebar */}
-              <div className="h-full">
-                <AppSidebar />
-              </div>
-              {/* Main content area */}
-              <div className="flex-1 flex min-h-0 min-w-0 justify-center overflow-hidden h-full">
-                <main className="flex-1 w-max mx-auto overflow-hidden">
-                  <Routes>
-                    <Route path="/listing" element={<Listing />} />
-                    <Route path="/package/:id" element={<PackageDetail />} />
-                    <Route path="*" element={<Navigate to="/listing" replace />} />
-                  </Routes>
-                </main>
-              </div>
+        <div className="h-screen w-screen flex flex-col bg-[#f8f9fb] overflow-hidden">
+          <AppNavbar />
+          <div className="flex flex-1 min-h-0 min-w-0 overflow-hidden">
+            <div className="flex-1 flex min-h-0 min-w-0 justify-center overflow-hidden h-full">
+              <main className="flex-1 w-max mx-auto overflow-hidden">
+                <Routes>
+                  <Route path="/listing" element={<Listing />} />
+                  <Route path="/package/:id" element={<PackageDetail />} />
+                  <Route path="*" element={<Navigate to="/listing" replace />} />
+                </Routes>
+              </main>
             </div>
           </div>
-        </SelectedAssetContext.Provider>
+        </div>
       </SearchContext.Provider>
     </BrowserRouter>
   );

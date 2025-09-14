@@ -2,15 +2,18 @@
 
 import { useParams } from 'react-router-dom';
 import { getPackageById } from '../services/packageService';
-import { useContext } from 'react';
-import { SelectedAssetContext, ActiveTabContext } from '../components/Sidebar';
+
+import * as React from 'react';
+import PackageSidebar, { SelectedAssetContext, ActiveTabContext } from '../components/PackageSidebar';
 import { PackageRenderer } from '../components/PackageRenderer';
+import type { Asset } from '../services/packageService';
+
 
 export default function PackageDetail() {
   const { id } = useParams<{ id: string }>();
   const pkg = id ? getPackageById(id) : undefined;
-  const { selectedAsset } = useContext(SelectedAssetContext);
-  const { activeTab } = useContext(ActiveTabContext);
+  const [selectedAsset, setSelectedAsset] = React.useState<Asset | null>(null);
+  const [activeTab, setActiveTab] = React.useState('browse');
   if (!pkg) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
@@ -19,5 +22,14 @@ export default function PackageDetail() {
       </div>
     );
   }
-  return <PackageRenderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />;
+  return (
+    <SelectedAssetContext.Provider value={{ selectedAsset, setSelectedAsset }}>
+      <ActiveTabContext.Provider value={{ activeTab, setActiveTab }}>
+        <div className="flex h-screen">
+          <PackageSidebar />
+          <PackageRenderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />
+        </div>
+      </ActiveTabContext.Provider>
+    </SelectedAssetContext.Provider>
+  );
 }
