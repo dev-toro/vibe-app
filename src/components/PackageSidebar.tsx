@@ -14,7 +14,7 @@ import { getPackageById } from '../services/packageService';
 import { useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { SelectedAssetContext, ActiveTabContext } from './Sidebar';
-import { TreeRenderer } from './TreeRenderer';
+import { AssetTreeRenderer } from './TreeRenderer';
 import type { TreeNode } from './TreeRenderer';
 
 
@@ -180,7 +180,7 @@ export default function PackageSidebar() {
             </div>
             <div className="flex flex-col gap-1 overflow-y-auto pr-1 px-2" style={{ maxHeight: 'calc(100vh - 210px)' }}>
               {tree.length > 0 ? (
-                <TreeRenderer
+                <AssetTreeRenderer
                   nodes={tree}
                   expanded={expanded}
                   setExpanded={setExpanded}

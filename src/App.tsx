@@ -3,8 +3,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Listing from './pages/Listing';
 import PackageDetail from './pages/Package';
-import Navbar from './components/Navbar';
-import Sidebar, { SelectedAssetContext } from './components/Sidebar';
+import AppNavbar from './components/Navbar';
+import AppSidebar, { SelectedAssetContext } from './components/Sidebar';
 import type { Asset } from './components/Sidebar';
 import * as React from 'react';
 
@@ -24,11 +24,11 @@ function App() {
       <SearchContext.Provider value={{ search, setSearch }}>
         <SelectedAssetContext.Provider value={{ selectedAsset, setSelectedAsset }}>
           <div className="h-screen w-screen flex flex-col bg-[#f8f9fb] overflow-hidden">
-            <Navbar />
+            <AppNavbar />
             <div className="flex flex-1 min-h-0 min-w-0 overflow-hidden">
               {/* Sidebar */}
               <div className="h-full">
-                <Sidebar />
+                <AppSidebar />
               </div>
               {/* Main content area */}
               <div className="flex-1 flex min-h-0 min-w-0 justify-center overflow-hidden h-full">

@@ -6,7 +6,7 @@ import * as React from 'react';
 import { SearchContext } from '../App';
 import { SearchIcon } from 'lucide-react';
 
-export default function Navbar() {
+export default function AppNavbar() {
   const { search, setSearch } = React.useContext(SearchContext);
   return (
     <header className="top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 [&_*]:no-underline">

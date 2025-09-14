@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getPackageById } from '../services/packageService';
 import { useContext } from 'react';
 import { SelectedAssetContext, ActiveTabContext } from '../components/Sidebar';
-import { Renderer } from '../components/Renderer';
+import { PackageRenderer } from '../components/Renderer';
 
 export default function PackageDetail() {
   const { id } = useParams<{ id: string }>();
@@ -19,5 +19,5 @@ export default function PackageDetail() {
       </div>
     );
   }
-  return <Renderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />;
+  return <PackageRenderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />;
 }

@@ -28,7 +28,7 @@ export const ActiveTabContext = React.createContext<{
 import { useLocation } from 'react-router-dom';
 
 
-export default function Sidebar() {
+export default function AppSidebar() {
   const location = useLocation();
   const match = location.pathname.match(/^\/package\/(.+)$/);
   if (match) {

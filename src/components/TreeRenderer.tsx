@@ -20,7 +20,7 @@ type TreeRendererProps = {
   activeTab: string;
 };
 
-export function TreeRenderer({ nodes, expanded, setExpanded, selectedAsset, setSelectedAsset, assetTypeIcon, activeTab }: TreeRendererProps) {
+export function AssetTreeRenderer({ nodes, expanded, setExpanded, selectedAsset, setSelectedAsset, assetTypeIcon, activeTab }: TreeRendererProps) {
   function handleToggle(id: string) {
     setExpanded(prev => ({ ...prev, [id]: !prev[id] }));
   }
