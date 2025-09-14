@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getPackageById } from '../services/packageService';
 import { useContext } from 'react';
 import { SelectedAssetContext, ActiveTabContext } from '../components/Sidebar';
-import { PackageRenderer } from '../components/Renderer';
+import { PackageRenderer } from '../components/PackageRenderer';
 
 export default function PackageDetail() {
   const { id } = useParams<{ id: string }>();
