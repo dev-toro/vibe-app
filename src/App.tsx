@@ -43,9 +43,9 @@ function App() {
                 <div className="flex flex-1 min-h-0 min-w-0 overflow-hidden">
                   <main className="flex-1 min-h-0 min-w-0 w-full mx-auto overflow-auto">
                     <Routes>
-                      <Route path="/listing" element={<Listing />} />
+                      <Route path="/projects" element={<Listing />} />
                       <Route path="/package/:id" element={<PackageDetail />} />
-                      <Route path="*" element={<Navigate to="/listing" replace />} />
+                      <Route path="*" element={<Navigate to="/projects" replace />} />
                     </Routes>
                   </main>
                 </div>

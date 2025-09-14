@@ -5,10 +5,12 @@ import {
   AudioWaveform,
   BookOpen,
   Bot,
+  Box,
   Command,
   Frame,
   GalleryVerticalEnd,
   Map,
+  MonitorDot,
   PieChart,
   Settings2,
   SquareTerminal,
@@ -52,40 +54,44 @@ const data = {
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Workbench",
       url: "#",
-      icon: SquareTerminal,
+      icon: Box,
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "Playground",
+          url: "#",
+        }, 
+        {
+          title: "Projects",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "Libraries",
           url: "#",
         },
         {
-          title: "Settings",
+          title: "Marketplace",
           url: "#",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Monitoring",
       url: "#",
-      icon: Bot,
+      icon: MonitorDot,
       items: [
         {
-          title: "Genesis",
+          title: "Apps",
           url: "#",
         },
         {
-          title: "Explorer",
+          title: "Workloads",
           url: "#",
         },
         {
-          title: "Quantum",
+          title: "Connections",
           url: "#",
         },
       ],

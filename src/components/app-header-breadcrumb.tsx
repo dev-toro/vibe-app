@@ -11,11 +11,28 @@ import {
   BreadcrumbSeparator,
 } from './ui/breadcrumb';
 
-function getBreadcrumbItems(pathname: string, packageName?: string, selectedAsset?: { name: string }) {
-  if (pathname === '/') return [{ label: 'Workbench', href: '/listing', isCurrentPage: true }];
+type BreadcrumbItem = { label: string; href: string; isCurrentPage: boolean };
+
+function getBreadcrumbItems(pathname: string, packageName?: string, selectedAsset?: { name: string }): BreadcrumbItem[] {
+  // Config for main sections, easy to extend
+  const sections = [
+    { match: /^\/?$/, label: 'Projects', href: '/projects' },
+    { match: /^\/projects\/?$/, label: 'Projects', href: '/projects' },
+    { match: /^\/package\//, label: 'Package', href: '' },
+  ];
+
+  // Find which section matches
+  const section = sections.find(s => s.match.test(pathname));
+
+  // / or /projects
+  if (section && section.label === 'Projects') {
+    return [{ label: 'Projects', href: '/projects', isCurrentPage: true }];
+  }
+
+  // /package/:id or deeper
   if (pathname.startsWith('/package/')) {
-    const items = [
-      { label: 'Workbench', href: '/listing', isCurrentPage: false },
+    const items: BreadcrumbItem[] = [
+      { label: 'Projects', href: '/projects', isCurrentPage: false },
       { label: packageName || 'Package', href: pathname, isCurrentPage: !selectedAsset },
     ];
     if (selectedAsset) {
@@ -23,7 +40,9 @@ function getBreadcrumbItems(pathname: string, packageName?: string, selectedAsse
     }
     return items;
   }
-  return [{ label: 'Workbench', href: '/listing', isCurrentPage: true }];
+
+  // Default fallback
+  return [{ label: 'Projects', href: '/projects', isCurrentPage: true }];
 }
 
 type AppHeaderBreadcrumbProps = {
