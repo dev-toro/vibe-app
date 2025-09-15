@@ -20,34 +20,11 @@ export function Sandbox({ files, className }: SandboxProps) {
   }, [code]);
 
   return (
-    <div
-      className={className}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        height: '100%',
-        minHeight: 0,
-        minWidth: 0,
-        background: '#18181b',
-        color: '#fff',
-        borderRadius: 8,
-        border: '1px solid #e5e7eb',
-      }}
-    >
-      <header
-        style={{
-          fontWeight: 600,
-          fontSize: 18,
-          padding: '16px 24px',
-          borderBottom: '1px solid #23232b',
-          background: '#1e1e23',
-          letterSpacing: 0.5,
-        }}
-      >
+    <div className={"flex flex-col w-full h-full min-h-0 min-w-0" + (className ?? "")}>
+      <header className="font-semibold text-md p-2 tracking-wide border-b">
         {fileName}
       </header>
-      <div style={{ flex: 1, minHeight: 0, minWidth: 0 }}>
+      <div className="flex-1 min-h-0 min-w-0">
         <MonacoEditor
           key={fileName}
           height="100%"

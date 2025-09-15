@@ -76,7 +76,7 @@ export function PackageSidebarL1({
             <div className="flex-1" />
             <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-gray-900" /></Button>
           </div>
-          <div className="flex items-center gap-2 mb-3 px-4">
+          <div className="flex items-center gap-2 px-4">
             <div className="relative w-full">
               <Input
                 className="w-full pl-8 pr-2 text-[15px] h-9 border-gray-200 bg-[#f7f8fa] focus:bg-white"
@@ -106,7 +106,7 @@ export function PackageSidebarL1({
             <div className="flex-1" />
             <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-gray-900" /></Button>
           </div>
-          <div className="flex items-center gap-2 mb-3 px-4">
+          <div className="flex items-center gap-2 px-4">
             <div className="relative w-full">
               <Input
                 className="w-full pl-8 pr-2 text-[15px] h-9 border-gray-200 bg-[#f7f8fa] focus:bg-white"
