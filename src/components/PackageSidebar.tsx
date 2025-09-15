@@ -1,13 +1,5 @@
 // import * as React from 'react';
-import { Box, Folder, Plus, Search, MoreVertical, Layout, Server, Settings, Play, SeparatorHorizontal } from 'lucide-react';
 import type { AssetType } from '../services/packageService';
-// Map asset type to icon component
-const assetTypeIcon: Record<AssetType, import('lucide-react').LucideIcon> = {
-  view: Layout,
-  api: Server,
-  config: Settings,
-  job: Play,
-};
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { getPackageById } from '../services/packageService';
@@ -33,16 +25,21 @@ export const ActiveTabContext = React.createContext<{
 });
 import type { TreeNode } from './TreeRenderer';
 import { TreeSidebar } from './tree-sidebar';
-import { Separator } from '@radix-ui/react-dropdown-menu';
+import { Folder, Layout, Waypoints, Play, DatabaseZap, Plus, Search, Box, MoreVertical } from 'lucide-react';
 
 
-
-const ASSET_TYPES: { key: string; icon: React.ReactNode; label: string }[] = [
+type L1Group = {
+  key: string;
+  icon: React.ReactNode;
+  label: string;
+  assetTypes?: AssetType[];
+};
+const L1_GROUPS: L1Group[] = [
   { key: 'browse', icon: <Folder className="w-7 h-7" />, label: 'Browse' },
-  { key: 'view', icon: <Layout className="w-7 h-7" />, label: 'Analysis' },
-  { key: 'api', icon: <Server className="w-7 h-7" />, label: 'APIs' },
-  { key: 'config', icon: <Settings className="w-7 h-7" />, label: 'Configs' },
-  { key: 'job', icon: <Play className="w-7 h-7" />, label: 'Jobs' },
+  { key: 'analysis', icon: <Layout className="w-7 h-7" />, label: 'Analysis', assetTypes: ['Views', 'Reports', 'Variables'] },
+  { key: 'ontology', icon: <Waypoints className="w-7 h-7" />, label: 'Ontology', assetTypes: ['Objects', 'Events', 'Transformations', 'Knowledge'] },
+  { key: 'automation', icon: <Play className="w-7 h-7" />, label: 'Automation', assetTypes: ['Action Flow', 'Tasks'] },
+  { key: 'data', icon: <DatabaseZap className="w-7 h-7" />, label: 'Data', assetTypes: ['Data Connection'] },
 ];
 
 export default function PackageSidebar() {
@@ -141,9 +138,10 @@ export default function PackageSidebar() {
           <span className="sr-only">Browse</span>
         </Button>
         {/* Render a button for each asset type except 'browse' */}
-        {ASSET_TYPES.filter(t => t.key !== 'browse').map((item) => {
-        // Check if there are assets of this type
-        const hasAssets = flattenAssetsByType(pkg, item.key as AssetType).length > 0;
+        {L1_GROUPS.filter(t => t.key !== 'browse').map((item) => {
+  // Check if there are assets for this group (any of its assetTypes)
+  const assetTypes = item.assetTypes || [item.key as AssetType];
+  const hasAssets = assetTypes.some(type => flattenAssetsByType(pkg, type).length > 0);
         return (
             <Button
             key={item.key}
@@ -188,7 +186,6 @@ export default function PackageSidebar() {
                   setExpanded={setExpanded}
                   selectedAsset={selectedAsset}
                   setSelectedAsset={setSelectedAsset}
-                  assetTypeIcon={assetTypeIcon}
                   activeTab={activeTab}
                 />
               ) : <div className="text-xs text-gray-400 px-3">No assets</div>}
@@ -197,7 +194,7 @@ export default function PackageSidebar() {
         ) : (
           <>
             <div className="flex items-center gap-2 mb-2 px-4">
-              <span className="font-semibold text-[16px] text-gray-900">{ASSET_TYPES.find(t => t.key === activeTab)?.label}</span>
+              <span className="font-semibold text-[16px] text-gray-900">{L1_GROUPS.find(t => t.key === activeTab)?.label}</span>
               <div className="flex-1" />
               <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-gray-900" /></Button>
             </div>
@@ -205,7 +202,7 @@ export default function PackageSidebar() {
               <div className="relative w-full">
                 <Input
                   className="w-full pl-8 pr-2 text-[15px] h-9 border-gray-200 bg-[#f7f8fa] focus:bg-white"
-                  placeholder={`Search ${ASSET_TYPES.find(t => t.key === activeTab)?.label?.toLowerCase()}`}
+                  placeholder={`Search ${L1_GROUPS.find(t => t.key === activeTab)?.label?.toLowerCase()}`}
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                 />
@@ -214,29 +211,38 @@ export default function PackageSidebar() {
             </div>
             <div className="flex flex-col gap-1 overflow-y-auto pr-1 px-2" style={{ maxHeight: 'calc(100vh - 210px)' }}>
               {(() => {
-                const assets = flattenAssetsByType(pkg, activeTab as AssetType).filter((a: any) =>
-                  a.name.toLowerCase().includes(search.toLowerCase())
-                );
-                if (assets.length === 0) return <div className="text-xs text-gray-400 px-3">No assets</div>;
-                return assets.map((asset: any) => {
-                  const Icon = assetTypeIcon[asset.type as AssetType] || Box;
-                  const handleAssetClick = (asset: any) => {
-                    if (asset && typeof asset.id === 'string' && typeof asset.name === 'string' && typeof asset.yaml === 'string') {
-                      setSelectedAsset(asset);
-                    }
-                  };
-                  return (
-                    <button
-                      key={asset.id}
-                      className={`group flex items-center gap-2 px-2 py-1 rounded-lg w-full text-[15px] hover:bg-gray-100 font-normal transition-colors ${selectedAsset?.id === asset.id ? 'bg-gray-200 text-black' : 'text-gray-800'}`}
-                      onClick={() => handleAssetClick(asset)}
-                    >
-                      <Icon className={`w-4 h-4 ${selectedAsset?.id === asset.id ? 'text-black' : 'text-gray-700 group-hover:text-black'}`} />
-                      <span>{asset.name}</span>
-                      <MoreVertical className="w-4 h-4 ml-auto text-gray-400 group-hover:text-black" />
-                    </button>
-                  );
+                const group = L1_GROUPS.find(t => t.key === activeTab);
+                const assetTypes = group?.assetTypes || [activeTab as AssetType];
+                let assets: any[] = [];
+                assetTypes.forEach(type => {
+                  assets = assets.concat(flattenAssetsByType(pkg, type));
                 });
+                assets = assets.filter((a: any) => a.name.toLowerCase().includes(search.toLowerCase()));
+                if (assets.length === 0) return <div className="text-xs text-gray-400 px-3">No assets</div>;
+                // Build a tree where each asset type is a folder
+                const assetTypeFolders = assetTypes.map(type => ({
+                  id: `type-folder-${type}`,
+                  name: type,
+                  type: 'folder',
+                  children: assets
+                    .filter((a: any) => a.type === type)
+                    .map((asset: any) => ({
+                      id: asset.id,
+                      name: asset.name,
+                      type: 'asset',
+                      asset,
+                    })),
+                })).filter(folder => folder.children.length > 0);
+                return (
+                  <TreeSidebar
+                    nodes={assetTypeFolders}
+                    expanded={expanded}
+                    setExpanded={setExpanded}
+                    selectedAsset={selectedAsset}
+                    setSelectedAsset={setSelectedAsset}
+                    activeTab={activeTab}
+                  />
+                );
               })()}
             </div>
           </>
