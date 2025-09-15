@@ -8,7 +8,7 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
+} from "@/components/nav/sidebar"
 import AppHeader from './components/app-header';
 
 import Listing from './pages/Listing';

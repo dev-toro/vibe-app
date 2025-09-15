@@ -9,7 +9,7 @@ import {
   Box,
 } from "lucide-react"
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -18,9 +18,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "./ui/sidebar"
+} from "./sidebar"
 
-import { getPackages } from "../services/packageService"
+import { getPackages } from "../../services/packageService"
 
 export function NavProjects() {
   const { isMobile } = useSidebar()

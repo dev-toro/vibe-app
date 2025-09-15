@@ -14,18 +14,18 @@ import {
   Settings2,
 } from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
+import { NavMain } from "@/components/nav/nav-main"
 import { useLocation } from "react-router-dom"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { NavProjects } from "@/components/nav/nav-projects"
+import { NavUser } from "@/components/nav/nav-user"
+import { TeamSwitcher } from "@/components/nav/team-switcher"
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/nav/sidebar"
 
 // This is sample data.
 const data = {

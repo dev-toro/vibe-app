@@ -25,7 +25,7 @@ export const ActiveTabContext = React.createContext<{
 });
 import type { TreeNode } from './TreeRenderer';
 import { TreeSidebar } from './tree-sidebar';
-import { Folder, Layout, Waypoints, Play, DatabaseZap, Plus, Search, Box, MoreVertical } from 'lucide-react';
+import { Folder, Layout, Waypoints, Play, DatabaseZap, Plus, Search } from 'lucide-react';
 
 
 export type L1Group = {
