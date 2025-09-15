@@ -28,13 +28,13 @@ import { TreeSidebar } from './tree-sidebar';
 import { Folder, Layout, Waypoints, Play, DatabaseZap, Plus, Search, Box, MoreVertical } from 'lucide-react';
 
 
-type L1Group = {
+export type L1Group = {
   key: string;
   icon: React.ReactNode;
   label: string;
   assetTypes?: AssetType[];
 };
-const L1_GROUPS: L1Group[] = [
+export const L1_GROUPS: L1Group[] = [
   { key: 'browse', icon: <Folder className="w-7 h-7" />, label: 'Browse' },
   { key: 'analysis', icon: <Layout className="w-7 h-7" />, label: 'Analysis', assetTypes: ['Views', 'Reports', 'Variables'] },
   { key: 'ontology', icon: <Waypoints className="w-7 h-7" />, label: 'Ontology', assetTypes: ['Objects', 'Events', 'Transformations', 'Knowledge'] },
