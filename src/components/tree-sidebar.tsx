@@ -141,7 +141,7 @@ export function TreeSidebar({
                 disabled={activeTab !== 'browse'}
                 >
                 <Icon/>
-                {node.name}
+                <span className="truncate max-w-[140px] block whitespace-nowrap overflow-hidden text-ellipsis">{node.name}</span>
                 <MoreVertical className="w-4 h-4 ml-auto text-black group-hover:text-black" />
             </SidebarMenuButton>
         </SidebarMenuItem>
@@ -160,7 +160,7 @@ export function TreeSidebar({
                 <SidebarMenuItem key={index}>
                   <SidebarMenuButton>
                     <File />
-                    {item.file}
+                    <span className="truncate max-w-[140px] block whitespace-nowrap overflow-hidden text-ellipsis">{item.file}</span>
                   </SidebarMenuButton>
                   <SidebarMenuBadge>{item.state}</SidebarMenuBadge>
                 </SidebarMenuItem>

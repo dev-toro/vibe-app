@@ -51,17 +51,6 @@ export default function PackageSidebar() {
   if (!match) return null;
   const packageId = match[1];
   const pkg = getPackageById(packageId);
-  // Build a tree structure for folders/assets
-  // Recursively build a tree structure for folders/assets (supports nested folders)
-  // ...existing code...
-
-
-
-    // Only build tree for browse tab
-  // ...existing code...
-
-
-
   const [expanded, setExpanded] = React.useState<{ [id: string]: boolean }>({});
   const [search, setSearch] = React.useState('');
   const { activeTab, setActiveTab } = useContext(ActiveTabContext);
