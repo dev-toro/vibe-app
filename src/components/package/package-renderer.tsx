@@ -5,6 +5,7 @@ import type { Asset, Package } from '../../services/packageService';
 import { L1_GROUPS, type L1Group } from './package-sidebar';
 import { PackageRendererHeader } from './package-renderer-header';
 import { Tabs } from '../ui/tabs';
+import { PackageRendererModeTest } from './package-renderer-mode-test';
 
 export function PackageRenderer({ pkg, selectedAsset, activeTab }: { pkg: Package, selectedAsset: Asset | null, activeTab?: string }) {
   const [rendererMode, setRendererMode] = React.useState<'edit' | 'test'>('edit');
@@ -44,7 +45,7 @@ export function PackageRenderer({ pkg, selectedAsset, activeTab }: { pkg: Packag
             {rendererMode === 'edit' ? (
               <Sandbox files={{ [selectedAsset.name + '.yaml']: { code: selectedAsset.yaml } }} />
             ) : (
-              <div className="flex flex-1 items-center justify-center text-gray-400 text-lg">Test mode coming soon...</div>
+              <PackageRendererModeTest selectedAsset={selectedAsset} />
             )}
           </div>
         </div>
