@@ -1,5 +1,5 @@
 // import * as React from 'react';
-import { Box, Folder, Plus, Search, MoreVertical, Layout, Server, Settings, Play } from 'lucide-react';
+import { Box, Folder, Plus, Search, MoreVertical, Layout, Server, Settings, Play, SeparatorHorizontal } from 'lucide-react';
 import type { AssetType } from '../services/packageService';
 // Map asset type to icon component
 const assetTypeIcon: Record<AssetType, import('lucide-react').LucideIcon> = {
@@ -33,12 +33,13 @@ export const ActiveTabContext = React.createContext<{
 });
 import type { TreeNode } from './TreeRenderer';
 import { TreeSidebar } from './tree-sidebar';
+import { Separator } from '@radix-ui/react-dropdown-menu';
 
 
 
 const ASSET_TYPES: { key: string; icon: React.ReactNode; label: string }[] = [
   { key: 'browse', icon: <Folder className="w-7 h-7" />, label: 'Browse' },
-  { key: 'view', icon: <Layout className="w-7 h-7" />, label: 'Views' },
+  { key: 'view', icon: <Layout className="w-7 h-7" />, label: 'Analysis' },
   { key: 'api', icon: <Server className="w-7 h-7" />, label: 'APIs' },
   { key: 'config', icon: <Settings className="w-7 h-7" />, label: 'Configs' },
   { key: 'job', icon: <Play className="w-7 h-7" />, label: 'Jobs' },
@@ -139,34 +140,32 @@ export default function PackageSidebar() {
           <Folder className="w-7 h-7" />
           <span className="sr-only">Browse</span>
         </Button>
-        {/* Asset type tabs, vertically centered, only enabled if assets exist */}
-        <div className="flex-1 flex flex-col justify-center items-center gap-0.5 w-full">
-          {ASSET_TYPES.filter(t => t.key !== 'browse').map((item) => {
-            // Check if there are assets of this type
-            const hasAssets = flattenAssetsByType(pkg, item.key as AssetType).length > 0;
-            return (
-              <Button
-                key={item.key}
-                variant="ghost"
-                size="icon"
-                className={`my-1 w-8 h-8 rounded-sm border transition-all flex items-center justify-center ${activeTab === item.key ? 'border-black text-black shadow-[0_2px_8px_0_rgba(0,0,0,0.03)]' : 'border-transparent text-gray-700 hover:bg-gray-100 hover:text-black'} ${!hasAssets ? 'opacity-40 pointer-events-none' : ''}`}
-                onClick={() => setActiveTab(item.key)}
-                style={activeTab === item.key ? { boxShadow: '0 0 0 2px #222, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
-                disabled={!hasAssets}
-              >
-                {item.icon}
-                <span className="sr-only">{item.label}</span>
-              </Button>
-            );
-          })}
-        </div>
+        {/* Render a button for each asset type except 'browse' */}
+        {ASSET_TYPES.filter(t => t.key !== 'browse').map((item) => {
+        // Check if there are assets of this type
+        const hasAssets = flattenAssetsByType(pkg, item.key as AssetType).length > 0;
+        return (
+            <Button
+            key={item.key}
+            variant="ghost"
+            size="icon"
+            className={`my-1 w-8 h-8 rounded-sm border transition-all flex items-center justify-center ${activeTab === item.key ? 'border-black text-black shadow-[0_2px_8px_0_rgba(0,0,0,0.03)]' : 'border-transparent text-gray-700 hover:bg-gray-100 hover:text-black'} ${!hasAssets ? 'opacity-40 pointer-events-none' : ''}`}
+            onClick={() => setActiveTab(item.key)}
+            style={activeTab === item.key ? { boxShadow: '0 0 0 2px #222, 0 2px 8px 0 rgba(0,0,0,0.03)' } : {}}
+            disabled={!hasAssets}
+            >
+            {item.icon}
+            <span className="sr-only">{item.label}</span>
+            </Button>
+        );
+        })}
       </nav>
       {/* L1 Content: flat list of assets by type */}
       <aside className="flex-1 flex flex-col py-4 px-0 min-w-[280px] max-w-[380px] border-r border-gray-200">
         {activeTab === 'browse' ? (
           <>
             <div className="flex items-center gap-2 mb-2 px-4">
-              <span className="font-semibold text-[16px] text-gray-900">Browse Assets</span>
+              <span className="font-semibold text-[16px] text-gray-900">Browse</span>
               <div className="flex-1" />
               <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-gray-900" /></Button>
             </div>
@@ -198,7 +197,7 @@ export default function PackageSidebar() {
         ) : (
           <>
             <div className="flex items-center gap-2 mb-2 px-4">
-              <span className="font-semibold text-[16px] text-gray-900">{ASSET_TYPES.find(t => t.key === activeTab)?.label} Assets</span>
+              <span className="font-semibold text-[16px] text-gray-900">{ASSET_TYPES.find(t => t.key === activeTab)?.label}</span>
               <div className="flex-1" />
               <Button variant="ghost" size="icon" className="rounded p-1"><Plus className="w-4 h-4 text-gray-900" /></Button>
             </div>
