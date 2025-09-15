@@ -4,8 +4,8 @@ import * as lucideIcons from "lucide-react"
 import { Box, ChevronRight, File, Folder, MoreVertical } from "lucide-react"
 
 // If these modules are missing, ensure they exist or replace with available components
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub } from "@/components/nav/sidebar"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
+import { SidebarMenuItem, SidebarMenuButton, SidebarMenuSub, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuBadge } from "../nav/sidebar";
 
 // ...existing code...
 
@@ -16,7 +16,6 @@ export function TreeSidebar({
   setExpanded = () => {},
   selectedAsset = null,
   setSelectedAsset = () => {},
-  activeTab = 'browse',
   showChanges = false,
   changes = [],
 }: {
@@ -25,7 +24,6 @@ export function TreeSidebar({
   setExpanded: (cb: (prev: { [id: string]: boolean }) => { [id: string]: boolean }) => void;
   selectedAsset: any;
   setSelectedAsset: (asset: any) => void;
-  activeTab: string;
   showChanges?: boolean;
   changes?: { file: string; state: string }[];
 }) {

@@ -2,8 +2,7 @@
 
 import { Sandbox } from '../ui/sandbox';
 import { PackageHome } from './package-home';
-import type { Package } from '../../services/packageService';
-import type { Asset } from './Sidebar';
+import type { Asset, Package } from '../../services/packageService';
 import { L1_GROUPS, type L1Group } from './package-sidebar';
 
 export function PackageRenderer({ pkg, selectedAsset, activeTab }: { pkg: Package, selectedAsset: Asset | null, activeTab?: string }) {

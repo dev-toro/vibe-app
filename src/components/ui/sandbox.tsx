@@ -7,7 +7,7 @@ export interface SandboxProps {
 import * as React from "react";
 import MonacoEditor from "@monaco-editor/react";
 
-export function Sandbox({ files, editorHeight = "400px", className }: SandboxProps) {
+export function Sandbox({ files, className }: SandboxProps) {
   // Get the first file and its code
   const fileEntry = files ? (Object.entries(files)[0] as [string, { code: string }] | undefined) : undefined;
   const fileName = fileEntry ? fileEntry[0] : "example.yaml";
@@ -55,7 +55,7 @@ export function Sandbox({ files, editorHeight = "400px", className }: SandboxPro
           defaultLanguage="yaml"
           value={value}
           onChange={v => setValue(v ?? "")}
-          theme="vs-dark"
+          theme="vs-light"
           options={{
             minimap: { enabled: false },
             fontSize: 14,

@@ -21,7 +21,6 @@ export const ActiveTabContext = React.createContext<{
   activeTab: 'browse',
   setActiveTab: () => {},
 });
-import type { TreeNode } from '../TreeRenderer';
 import { Folder, Layout, Waypoints, Play, DatabaseZap } from 'lucide-react';
 
 
@@ -30,6 +29,14 @@ export type L1Group = {
   icon: React.ReactNode;
   label: string;
   assetTypes?: AssetType[];
+};
+
+export type TreeNode = {
+  id: string;
+  name: string;
+  type: 'folder' | 'asset';
+  children?: TreeNode[];
+  asset?: Asset;
 };
 export const L1_GROUPS: L1Group[] = [
   { key: 'browse', icon: <Folder className="w-7 h-7" />, label: 'Browse' },

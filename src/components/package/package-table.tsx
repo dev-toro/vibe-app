@@ -13,6 +13,12 @@ import {
 import type { SortingState } from '@tanstack/react-table';
 import type { Package } from '../../services/packageService';
 
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData> {
+    onToggleFavorite: (id: string) => void;
+  }
+}
+
 const columnHelper = createColumnHelper<Package>();
 
 function NameCell({ row, onToggleFavorite }: { row: any; onToggleFavorite: (id: string) => void }) {

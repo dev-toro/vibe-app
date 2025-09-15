@@ -1,4 +1,5 @@
 {
+  "homepage": "https://dev-toro.github.io/vibe-app/",
   "name": "workbench",
   "private": true,
   "version": "0.0.0",
@@ -7,7 +8,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
@@ -25,6 +28,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fuzzysort": "^3.1.0",
+    "gh-pages": "^6.3.0",
     "init": "^0.1.2",
     "lucide-react": "^0.544.0",
     "react": "^19.1.1",

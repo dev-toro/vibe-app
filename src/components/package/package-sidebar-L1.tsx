@@ -95,7 +95,6 @@ export function PackageSidebarL1({
                 setExpanded={setExpanded}
                 selectedAsset={selectedAsset}
                 setSelectedAsset={setSelectedAsset}
-                activeTab={activeTab}
               />
             ) : <div className="text-xs text-gray-400 px-3">No assets</div>}
           </div>
@@ -149,7 +148,6 @@ export function PackageSidebarL1({
                   setExpanded={setExpanded}
                   selectedAsset={selectedAsset}
                   setSelectedAsset={setSelectedAsset}
-                  activeTab={activeTab}
                 />
               );
             })()}

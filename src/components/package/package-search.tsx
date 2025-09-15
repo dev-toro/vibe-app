@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Input } from '../ui/input';
 
 interface PackageSearchProps {
