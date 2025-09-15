@@ -1,12 +1,13 @@
-import React from 'react';
 import { Sandbox } from '../ui/sandbox';
+import React from 'react';
 import { PackageHome } from './package-home';
 import type { Asset, Package } from '../../services/packageService';
-import { L1_GROUPS, type L1Group, SelectedAssetContext } from './package-sidebar';
-import { ArrowLeft } from 'lucide-react';
-import { Button } from '../ui/button';
+import { L1_GROUPS, type L1Group } from './package-sidebar';
+import { PackageRendererHeader } from './package-renderer-header';
+import { Tabs } from '../ui/tabs';
 
 export function PackageRenderer({ pkg, selectedAsset, activeTab }: { pkg: Package, selectedAsset: Asset | null, activeTab?: string }) {
+  const [rendererMode, setRendererMode] = React.useState<'edit' | 'test'>('edit');
 
   // If an L1 experience (not 'browse') is selected, show a placeholder for each group item
   if (activeTab !== 'browse' && !selectedAsset) {
@@ -31,26 +32,21 @@ export function PackageRenderer({ pkg, selectedAsset, activeTab }: { pkg: Packag
     );
   }
   if (selectedAsset) {
-    // Get setSelectedAsset from context
-    const { setSelectedAsset } = React.useContext(SelectedAssetContext) as { setSelectedAsset: (a: Asset | null) => void };
-    const handleBack = () => {
-      setSelectedAsset(null);
-    };
     return (
       <div className="flex flex-col items-center justify-center w-full h-full">
         <div className={"flex flex-col w-full h-full min-h-0 min-w-0"}>
-          <header className="font-semibold text-md p-2 tracking-wide border-b flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleBack}
-              aria-label="Back"
-            >
-              <ArrowLeft/>
-            </Button>
-            {selectedAsset.name}
-          </header>
-          <Sandbox files={{ [selectedAsset.name + '.yaml']: { code: selectedAsset.yaml } }} />
+          <PackageRendererHeader
+            selectedAsset={selectedAsset}
+            tabsValue={rendererMode}
+            onTabsChange={setRendererMode}
+          />
+          <div className='flex w-full h-full'>
+            {rendererMode === 'edit' ? (
+              <Sandbox files={{ [selectedAsset.name + '.yaml']: { code: selectedAsset.yaml } }} />
+            ) : (
+              <div className="flex flex-1 items-center justify-center text-gray-400 text-lg">Test mode coming soon...</div>
+            )}
+          </div>
         </div>
       </div>
     );
