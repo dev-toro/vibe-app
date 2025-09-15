@@ -1,8 +1,9 @@
 
-import * as React from "react"
+// import * as React from "react" // Not needed
 import * as lucideIcons from "lucide-react"
 import { Box, ChevronRight, File, Folder, MoreVertical } from "lucide-react"
 
+// If these modules are missing, ensure they exist or replace with available components
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub } from "@/components/ui/sidebar"
 
@@ -59,7 +60,8 @@ export function TreeSidebar({
 
             {isOpen && node.children && node.children.length > 0 && (
               <div className="ml-4 border-l border-gray-200 pl-2">
-                {renderTree(node.children, depth + 1)}
+                {/* Filter out non-React elements to fix type error */}
+                {Array.isArray(node.children) && renderTree(node.children, depth + 1)?.filter(Boolean)}
               </div>
             )}
 
@@ -69,21 +71,16 @@ export function TreeSidebar({
       let Icon = Box;
       if (node.asset?.icon && typeof node.asset.icon === 'string' && (lucideIcons as any)[node.asset.icon]) {
         Icon = (lucideIcons as any)[node.asset.icon];
-      } else {
-        return Icon;
       }
-// Remove duplicate import statement
+      // Remove duplicate import statement
       const handleAssetClick = (asset: any) => {
-        if (activeTab === 'browse' && asset && typeof asset.id === 'string' && typeof asset.name === 'string' && typeof asset.yaml === 'string') {
           setSelectedAsset(asset);
-        }
       };
       return (
         <SidebarMenuItem key={node.id}>
               <SidebarMenuButton
                 isActive={selectedAsset?.id === node.id}
                 onClick={() => handleAssetClick(node.asset)}
-                disabled={activeTab !== 'browse'}
                 >
                 <Icon/>
                 <span className="truncate max-w-[140px] block whitespace-nowrap overflow-hidden text-ellipsis">{node.name}</span>

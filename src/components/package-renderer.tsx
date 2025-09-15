@@ -1,7 +1,7 @@
-import { Sandbox } from '../components/ui/sandbox';
-import { PackageHome } from '../components/PackageHome';
+import { Sandbox } from './ui/sandbox';
+import { PackageHome } from './package-home';
 import type { Package } from '../services/packageService';
-import type { Asset } from '../components/Sidebar';
+import type { Asset } from './Sidebar';
 
 export function PackageRenderer({ pkg, selectedAsset, activeTab }: { pkg: Package, selectedAsset: Asset | null, activeTab?: string }) {
   // If an L1 experience (not 'browse') is selected, show a placeholder
