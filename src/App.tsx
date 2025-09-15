@@ -45,9 +45,9 @@ function App() {
           {/* Main content area */}
           <div className="flex flex-1 flex-col gap-4 p-0 min-h-0 min-w-0 h-full">
             <SearchContext.Provider value={{ search, setSearch }}>
-              <div className="flex flex-1 flex-col bg-[#f8f9fb] min-h-0 min-w-0 h-full overflow-hidden">
+              <div className="flex flex-1 flex-col bg-[#f8f9fb] min-h-0 min-w-0 h-full">
                 <div className="flex flex-1 min-h-0 min-w-0 h-full">
-                  <main className="flex-1 min-h-0 min-w-0 w-full mx-auto h-full overflow-auto">
+                    <main className="flex-1 min-h-0 min-w-0 w-full mx-auto h-full">
                     <Routes>
                       <Route path="/projects" element={<Listing />} />
                       <Route path="/package/:id" element={<PackageDetail />} />

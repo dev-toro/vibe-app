@@ -26,10 +26,11 @@ export default function PackageDetail() {
     <SelectedAssetContext.Provider value={{ selectedAsset, setSelectedAsset }}>
       <ActiveTabContext.Provider value={{ activeTab, setActiveTab }}>
         <div className="flex flex-col h-screen">
-
           <div className="flex flex-1">
             <PackageSidebar />
-            <PackageRenderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />
+            <div className="w-full h-full overflow-hidden">
+              <PackageRenderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />
+            </div>
           </div>
         </div>
       </ActiveTabContext.Provider>
