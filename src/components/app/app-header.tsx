@@ -1,25 +1,25 @@
-
-import { Button } from './ui/button';
-import Breadcrumb from './Breadcrumb';
-import { Input } from './ui/input';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
 import * as React from 'react';
-import { SearchContext } from '../App';
+import { SearchContext } from '../../App';
 import { SearchIcon } from 'lucide-react';
-import { SelectedAssetContext } from './PackageSidebar';
+import { SelectedAssetContext } from '../package/package-sidebar';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import AppHeaderBreadcrumb from './app-header-breadcrumb';
 
-export default function AppNavbar() {
+export default function AppHeader() {
   const { search, setSearch } = React.useContext(SearchContext);
   // Use context from parent provider (Listing or PackageSidebar)
   const navigate = useNavigate();
   const { selectedAsset, setSelectedAsset } = React.useContext(SelectedAssetContext);
+  const location = useLocation();
+  const isPackageRoute = /^\/package\/[^/]+$/.test(location.pathname);
   return (
-    <header className="top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 md:px-6 [&_*]:no-underline">
-      <nav className="container mx-auto relative flex h-16 max-w-screen-2xl items-center gap-2">
+     <div className="flex container w-full relative h-12 items-center gap-2">
         {/* Left: Breadcrumb */}
         <div className="flex items-center gap-2 min-w-0 flex-1">
-          <Breadcrumb
+          <AppHeaderBreadcrumb
             selectedAsset={selectedAsset ? { name: selectedAsset.name } : undefined}
             onBreadcrumbClick={href => {
               if (href.includes('/package/')) {
@@ -48,11 +48,12 @@ export default function AppNavbar() {
         </div>
         {/* Right: Button */}
         <div className="flex items-center gap-2 flex-1 justify-end">
-          <Button variant="outline" className="text-sm max-sm:aspect-square max-sm:p-0">
-            Create package
-          </Button>
+          {!isPackageRoute && (
+            <Button variant="outline" className="text-sm max-sm:aspect-square max-sm:p-0">
+              Create package
+            </Button>
+          )}
         </div>
-      </nav>
-    </header>
+     </div>
   );
 }

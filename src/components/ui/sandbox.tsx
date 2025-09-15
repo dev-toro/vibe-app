@@ -7,7 +7,7 @@ export interface SandboxProps {
 import * as React from "react";
 import MonacoEditor from "@monaco-editor/react";
 
-export function Sandbox({ files, editorHeight = "400px", className }: SandboxProps) {
+export function Sandbox({ files }: SandboxProps) {
   // Get the first file and its code
   const fileEntry = files ? (Object.entries(files)[0] as [string, { code: string }] | undefined) : undefined;
   const fileName = fileEntry ? fileEntry[0] : "example.yaml";
@@ -20,34 +20,7 @@ export function Sandbox({ files, editorHeight = "400px", className }: SandboxPro
   }, [code]);
 
   return (
-    <div
-      className={className}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        height: '100%',
-        minHeight: 0,
-        minWidth: 0,
-        background: '#18181b',
-        color: '#fff',
-        borderRadius: 8,
-        border: '1px solid #e5e7eb',
-      }}
-    >
-      <header
-        style={{
-          fontWeight: 600,
-          fontSize: 18,
-          padding: '16px 24px',
-          borderBottom: '1px solid #23232b',
-          background: '#1e1e23',
-          letterSpacing: 0.5,
-        }}
-      >
-        {fileName}
-      </header>
-      <div style={{ flex: 1, minHeight: 0, minWidth: 0 }}>
+    <div className="flex-1 min-h-0 min-w-0">
         <MonacoEditor
           key={fileName}
           height="100%"
@@ -55,7 +28,7 @@ export function Sandbox({ files, editorHeight = "400px", className }: SandboxPro
           defaultLanguage="yaml"
           value={value}
           onChange={v => setValue(v ?? "")}
-          theme="vs-dark"
+          theme="vs-light"
           options={{
             minimap: { enabled: false },
             fontSize: 14,
@@ -65,6 +38,5 @@ export function Sandbox({ files, editorHeight = "400px", className }: SandboxPro
           }}
         />
       </div>
-    </div>
   );
 }

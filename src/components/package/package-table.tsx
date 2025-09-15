@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box, MoreVertical, Star } from 'lucide-react';
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from './ui/table';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from './ui/dropdown-menu';
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../ui/table';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '../ui/dropdown-menu';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -11,7 +11,13 @@ import {
   createColumnHelper,
 } from '@tanstack/react-table';
 import type { SortingState } from '@tanstack/react-table';
-import type { Package } from '../services/packageService';
+import type { Package } from '../../services/packageService';
+
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData> {
+    onToggleFavorite: (id: string) => void;
+  }
+}
 
 const columnHelper = createColumnHelper<Package>();
 
@@ -19,7 +25,7 @@ function NameCell({ row, onToggleFavorite }: { row: any; onToggleFavorite: (id: 
   const pkg = row.original;
   return (
     <span className="flex items-center gap-2">
-      <Box className="w-4 h-4 text-blue-500" aria-label="package icon" />
+      <Box className="w-4 h-4" aria-label="package icon" />
       {pkg.name}
       {pkg.favorited && <Star className="w-4 h-4 text-yellow-400 ml-1" fill="#facc15" />}
       <DropdownMenu>

@@ -4,9 +4,8 @@ import { useParams } from 'react-router-dom';
 import { getPackageById } from '../services/packageService';
 
 import * as React from 'react';
-import PackageSidebar, { SelectedAssetContext, ActiveTabContext } from '../components/PackageSidebar';
-import { PackageRenderer } from '../components/PackageRenderer';
-import AppNavbar from '../components/Navbar';
+import PackageSidebar, { SelectedAssetContext, ActiveTabContext } from '../components/package/package-sidebar';
+import { PackageRenderer } from '../components/package/package-renderer';
 import type { Asset } from '../services/packageService';
 
 
@@ -27,10 +26,11 @@ export default function PackageDetail() {
     <SelectedAssetContext.Provider value={{ selectedAsset, setSelectedAsset }}>
       <ActiveTabContext.Provider value={{ activeTab, setActiveTab }}>
         <div className="flex flex-col h-screen">
-          <AppNavbar />
           <div className="flex flex-1">
             <PackageSidebar />
-            <PackageRenderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />
+            <div className="w-full h-full overflow-hidden">
+              <PackageRenderer pkg={pkg} selectedAsset={selectedAsset} activeTab={activeTab} />
+            </div>
           </div>
         </div>
       </ActiveTabContext.Provider>

@@ -1,5 +1,5 @@
 
-import type { Package } from '../services/packageService';
+import type { Package } from '../../services/packageService';
 
 
 // Recursively count all assets in folders and top-level assets

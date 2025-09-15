@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { Input } from '../components/ui/input';
+import { Input } from '../ui/input';
 
 interface PackageSearchProps {
   value: string;
