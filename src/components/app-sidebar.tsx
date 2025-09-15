@@ -15,6 +15,7 @@ import {
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
+import { useLocation } from "react-router-dom"
 import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
@@ -29,8 +30,8 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Toro",
+    email: "d.toro@celonis.com",
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
@@ -160,14 +161,33 @@ const data = {
   ],
 }
 
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const location = useLocation();
+  // Compute navMain with isActive set based on current location
+  const navMain = React.useMemo(() => {
+    return data.navMain.map(main => {
+      // Exact match for subitems
+      const subActive = main.items?.some(item => item.url && location.pathname === item.url);
+      // Only set main as active if its url is not '#' and matches exactly
+      const mainActive = main.url && main.url !== '#' && location.pathname === main.url;
+      return {
+        ...main,
+        isActive: !!subActive || !!mainActive,
+        items: main.items?.map(item => ({
+          ...item,
+          isActive: item.url && location.pathname === item.url,
+        })),
+      };
+    });
+  }, [location.pathname]);
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <TeamSwitcher teams={data.teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
@@ -175,5 +195,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
