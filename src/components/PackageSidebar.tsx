@@ -161,7 +161,7 @@ export default function PackageSidebar() {
         })}
       </nav>
       {/* L1 Content: flat list of assets by type */}
-      <aside className="flex-1 flex flex-col py-4 px-0 min-w-[280px] max-w-[380px] border-r border-gray-200">
+      <aside className="flex-1 flex flex-col py-1 px-0 min-w-[280px] max-w-[380px] border-r border-gray-200">
         {activeTab === 'browse' ? (
           <>
             <div className="flex items-center gap-2 mb-2 px-4">
