@@ -5,13 +5,12 @@ import { SearchContext } from '../../App';
 import { SearchIcon } from 'lucide-react';
 import { SelectedAssetContext } from '../package/package-sidebar';
 
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import AppHeaderBreadcrumb from './app-header-breadcrumb';
 
 export default function AppHeader() {
   const { search, setSearch } = React.useContext(SearchContext);
   // Use context from parent provider (Listing or PackageSidebar)
-  const navigate = useNavigate();
   const { selectedAsset, setSelectedAsset } = React.useContext(SelectedAssetContext);
   const location = useLocation();
   const isPackageRoute = /^\/package\/[^/]+$/.test(location.pathname);
@@ -24,9 +23,9 @@ export default function AppHeader() {
             onBreadcrumbClick={href => {
               if (href.includes('/package/')) {
                 setSelectedAsset && setSelectedAsset(null);
-                navigate(href);
+                window.location.hash = href;
               } else {
-                window.location.href = href;
+                window.location.hash = href;
               }
             }}
           />

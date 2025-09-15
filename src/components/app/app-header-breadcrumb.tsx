@@ -91,7 +91,7 @@ export default function AppHeaderBreadcrumb({
                     if (onBreadcrumbClick && item.href) {
                       onBreadcrumbClick(item.href);
                     } else if (item.href) {
-                      window.location.href = item.href;
+                      window.location.hash = item.href;
                     }
                   }}
                   className="cursor-pointer"
