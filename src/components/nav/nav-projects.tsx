@@ -34,7 +34,7 @@ export function NavProjects() {
         {favoritePackages.map((pkg) => (
           <SidebarMenuItem key={pkg.id}>
             <SidebarMenuButton asChild>
-              <a href={`/package/${pkg.id}`}>
+              <a href={`#/package/${pkg.id}`}>
                 <Box/>
                 <span>{pkg.name}</span>
               </a>
