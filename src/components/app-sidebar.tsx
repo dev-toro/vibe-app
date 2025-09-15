@@ -4,7 +4,6 @@ import * as React from "react"
 import {
   AudioWaveform,
   BookOpen,
-  Bot,
   Box,
   Command,
   Frame,
@@ -13,7 +12,6 @@ import {
   MonitorDot,
   PieChart,
   Settings2,
-  SquareTerminal,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -61,19 +59,19 @@ const data = {
       items: [
         {
           title: "Playground",
-          url: "#",
+          url: "/playground",
         }, 
         {
           title: "Projects",
-          url: "#",
+          url: "/projects",
         },
         {
           title: "Libraries",
-          url: "#",
+          url: "/libraries",
         },
         {
           title: "Marketplace",
-          url: "#",
+          url: "/marketplace",
         },
       ],
     },
@@ -83,16 +81,16 @@ const data = {
       icon: MonitorDot,
       items: [
         {
-          title: "Apps",
-          url: "#",
+          title: "Runtimes",
+          url: "/runtimes",
         },
         {
           title: "Workloads",
-          url: "#",
+          url: "/workloads",
         },
         {
-          title: "Connections",
-          url: "#",
+          title: "Data Ingestions",
+          url: "/data-ingestion",
         },
       ],
     },

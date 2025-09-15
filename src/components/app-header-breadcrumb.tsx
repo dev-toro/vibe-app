@@ -18,15 +18,21 @@ function getBreadcrumbItems(pathname: string, packageName?: string, selectedAsse
   const sections = [
     { match: /^\/?$/, label: 'Projects', href: '/projects' },
     { match: /^\/projects\/?$/, label: 'Projects', href: '/projects' },
+    { match: /^\/playground\/?$/, label: 'Playground', href: '/playground' },
+    { match: /^\/libraries\/?$/, label: 'Libraries', href: '/libraries' },
+    { match: /^\/marketplace\/?$/, label: 'Marketplace', href: '/marketplace' },
+    { match: /^\/runtimes\/?$/, label: 'Runtimes', href: '/runtimes' },
+    { match: /^\/workloads\/?$/, label: 'Workloads', href: '/workloads' },
+    { match: /^\/data-ingestion\/?$/, label: 'Data Ingestion', href: '/data-ingestion' },
     { match: /^\/package\//, label: 'Package', href: '' },
   ];
 
   // Find which section matches
   const section = sections.find(s => s.match.test(pathname));
 
-  // / or /projects
-  if (section && section.label === 'Projects') {
-    return [{ label: 'Projects', href: '/projects', isCurrentPage: true }];
+  // / or /projects or any top-level section
+  if (section && section.label !== 'Package') {
+    return [{ label: section.label, href: section.href, isCurrentPage: true }];
   }
 
   // /package/:id or deeper
