@@ -31,8 +31,8 @@ export const ActiveTabContext = React.createContext<{
   activeTab: 'browse',
   setActiveTab: () => {},
 });
-import { AssetTreeRenderer } from './TreeRenderer';
 import type { TreeNode } from './TreeRenderer';
+import { TreeSidebar } from './tree-sidebar';
 
 
 
@@ -194,7 +194,7 @@ export default function PackageSidebar() {
             </div>
             <div className="flex flex-col gap-1 overflow-y-auto overflow-x-scroll-auto pr-1 px-2" style={{ maxHeight: 'calc(100vh - 210px)' }}>
               {tree.length > 0 ? (
-                <AssetTreeRenderer
+                <TreeSidebar
                   nodes={tree}
                   expanded={expanded}
                   setExpanded={setExpanded}
