@@ -1,6 +1,6 @@
 
 
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import * as React from 'react';
 import { AppSidebar } from "./components/app/app-sidebar"
 import { Separator } from "./components/ui/separator"
@@ -29,7 +29,7 @@ export const SearchContext = React.createContext<{
 function App() {
   const [search, setSearch] = React.useState('');
   return (
-    <BrowserRouter>
+    <HashRouter>
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
@@ -66,7 +66,7 @@ function App() {
           </div>
         </SidebarInset>
       </SidebarProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

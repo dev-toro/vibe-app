@@ -85,7 +85,7 @@ export default function AppHeaderBreadcrumb({
                 <BreadcrumbPage>{item.label}</BreadcrumbPage>
               ) : (
                 <BreadcrumbLink
-                  href={item.href}
+                  href={`#${item.href}`}
                   onClick={e => {
                     e.preventDefault();
                     if (onBreadcrumbClick && item.href) {
