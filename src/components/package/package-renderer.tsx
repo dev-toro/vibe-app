@@ -4,7 +4,6 @@ import { PackageHome } from './package-home';
 import type { Asset, Package } from '../../services/packageService';
 import { L1_GROUPS, type L1Group } from './package-sidebar';
 import { PackageRendererHeader } from './package-renderer-header';
-import { Tabs } from '../ui/tabs';
 import { PackageRendererModeTest } from './package-renderer-mode-test';
 
 export function PackageRenderer({ pkg, selectedAsset, activeTab }: { pkg: Package, selectedAsset: Asset | null, activeTab?: string }) {
