@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Home } from 'lucide-react';
 import { useLocation, useParams } from 'react-router-dom';
-import { getPackageById } from '../services/packageService';
+import { getPackageById } from '../../services/packageService';
 import {
   Breadcrumb as ShadBreadcrumb,
   BreadcrumbList,
@@ -9,7 +9,7 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from './ui/breadcrumb';
+} from '../ui/breadcrumb';
 
 type BreadcrumbItem = { label: string; href: string; isCurrentPage: boolean };
 

@@ -1,8 +1,8 @@
 
 
-import { Sandbox } from './ui/sandbox';
+import { Sandbox } from '../ui/sandbox';
 import { PackageHome } from './package-home';
-import type { Package } from '../services/packageService';
+import type { Package } from '../../services/packageService';
 import type { Asset } from './Sidebar';
 import { L1_GROUPS, type L1Group } from './package-sidebar';
 

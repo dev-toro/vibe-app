@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import type { Package } from '../services/packageService';
+import type { Package } from '../../services/packageService';
 
 export default function PackageCard({ pkg }: { pkg: Package }) {
   return (

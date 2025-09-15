@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box, MoreVertical, Star } from 'lucide-react';
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from './ui/table';
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from './ui/dropdown-menu';
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '../ui/table';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '../ui/dropdown-menu';
 import { useNavigate } from 'react-router-dom';
 import {
   useReactTable,
@@ -11,7 +11,7 @@ import {
   createColumnHelper,
 } from '@tanstack/react-table';
 import type { SortingState } from '@tanstack/react-table';
-import type { Package } from '../services/packageService';
+import type { Package } from '../../services/packageService';
 
 const columnHelper = createColumnHelper<Package>();
 

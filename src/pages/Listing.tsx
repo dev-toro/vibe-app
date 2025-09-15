@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { getPackages } from '../services/packageService';
-import PackageTable from '../components/package-table';
+import PackageTable from '../components/package/package-table';
 import fuzzysort from 'fuzzysort';
 import { useContext, createContext, useState } from 'react';
 import { SearchContext } from '../App';

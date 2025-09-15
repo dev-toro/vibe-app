@@ -2,14 +2,14 @@
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import * as React from 'react';
-import { AppSidebar } from "@/components/app-sidebar"
+import { AppSidebar } from "@/components/app/app-sidebar"
 import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/nav/sidebar"
-import AppHeader from './components/app-header';
+import AppHeader from './components/app/app-header';
 
 import Listing from './pages/Listing';
 import PackageDetail from './pages/Package';

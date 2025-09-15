@@ -4,7 +4,7 @@ import { Input } from '../ui/input';
 import * as React from 'react';
 import { SearchContext } from '../../App';
 import { SearchIcon } from 'lucide-react';
-import { SelectedAssetContext } from '../package-sidebar';
+import { SelectedAssetContext } from '../package/package-sidebar';
 
 import { useNavigate, useLocation } from 'react-router-dom';
 

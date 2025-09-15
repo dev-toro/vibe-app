@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import { getPackageById } from '../services/packageService';
 
 import * as React from 'react';
-import PackageSidebar, { SelectedAssetContext, ActiveTabContext } from '../components/package-sidebar';
-import { PackageRenderer } from '../components/package-renderer';
+import PackageSidebar, { SelectedAssetContext, ActiveTabContext } from '../components/package/package-sidebar';
+import { PackageRenderer } from '../components/package/package-renderer';
 import type { Asset } from '../services/packageService';
 
 
