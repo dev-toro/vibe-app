@@ -5,7 +5,7 @@ import { SearchContext } from '../App';
 import { SearchIcon } from 'lucide-react';
 import { SelectedAssetContext } from './package-sidebar';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AppHeaderBreadcrumb from './app-header-breadcrumb';
 
 export default function AppHeader() {
@@ -13,6 +13,8 @@ export default function AppHeader() {
   // Use context from parent provider (Listing or PackageSidebar)
   const navigate = useNavigate();
   const { selectedAsset, setSelectedAsset } = React.useContext(SelectedAssetContext);
+  const location = useLocation();
+  const isPackageRoute = /^\/package\/[^/]+$/.test(location.pathname);
   return (
      <div className="flex container w-full relative h-12 items-center gap-2">
         {/* Left: Breadcrumb */}
@@ -46,9 +48,11 @@ export default function AppHeader() {
         </div>
         {/* Right: Button */}
         <div className="flex items-center gap-2 flex-1 justify-end">
-          <Button variant="outline" className="text-sm max-sm:aspect-square max-sm:p-0">
-            Create package
-          </Button>
+          {!isPackageRoute && (
+            <Button variant="outline" className="text-sm max-sm:aspect-square max-sm:p-0">
+              Create package
+            </Button>
+          )}
         </div>
      </div>
   );
