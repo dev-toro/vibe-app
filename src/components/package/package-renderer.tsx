@@ -1,9 +1,10 @@
-
-
+import React from 'react';
 import { Sandbox } from '../ui/sandbox';
 import { PackageHome } from './package-home';
 import type { Asset, Package } from '../../services/packageService';
-import { L1_GROUPS, type L1Group } from './package-sidebar';
+import { L1_GROUPS, type L1Group, SelectedAssetContext } from './package-sidebar';
+import { ArrowLeft } from 'lucide-react';
+import { Button } from '../ui/button';
 
 export function PackageRenderer({ pkg, selectedAsset, activeTab }: { pkg: Package, selectedAsset: Asset | null, activeTab?: string }) {
 
@@ -30,9 +31,27 @@ export function PackageRenderer({ pkg, selectedAsset, activeTab }: { pkg: Packag
     );
   }
   if (selectedAsset) {
+    // Get setSelectedAsset from context
+    const { setSelectedAsset } = React.useContext(SelectedAssetContext) as { setSelectedAsset: (a: Asset | null) => void };
+    const handleBack = () => {
+      setSelectedAsset(null);
+    };
     return (
       <div className="flex flex-col items-center justify-center w-full h-full">
-        <Sandbox files={{ [selectedAsset.name + '.yaml']: { code: selectedAsset.yaml } }} />
+        <div className={"flex flex-col w-full h-full min-h-0 min-w-0"}>
+          <header className="font-semibold text-md p-2 tracking-wide border-b flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleBack}
+              aria-label="Back"
+            >
+              <ArrowLeft/>
+            </Button>
+            {selectedAsset.name}
+          </header>
+          <Sandbox files={{ [selectedAsset.name + '.yaml']: { code: selectedAsset.yaml } }} />
+        </div>
       </div>
     );
   }

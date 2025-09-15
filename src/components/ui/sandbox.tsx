@@ -7,7 +7,7 @@ export interface SandboxProps {
 import * as React from "react";
 import MonacoEditor from "@monaco-editor/react";
 
-export function Sandbox({ files, className }: SandboxProps) {
+export function Sandbox({ files }: SandboxProps) {
   // Get the first file and its code
   const fileEntry = files ? (Object.entries(files)[0] as [string, { code: string }] | undefined) : undefined;
   const fileName = fileEntry ? fileEntry[0] : "example.yaml";
@@ -20,11 +20,7 @@ export function Sandbox({ files, className }: SandboxProps) {
   }, [code]);
 
   return (
-    <div className={"flex flex-col w-full h-full min-h-0 min-w-0" + (className ?? "")}>
-      <header className="font-semibold text-md p-2 tracking-wide border-b">
-        {fileName}
-      </header>
-      <div className="flex-1 min-h-0 min-w-0">
+    <div className="flex-1 min-h-0 min-w-0">
         <MonacoEditor
           key={fileName}
           height="100%"
@@ -42,6 +38,5 @@ export function Sandbox({ files, className }: SandboxProps) {
           }}
         />
       </div>
-    </div>
   );
 }
