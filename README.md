@@ -30,4 +30,8 @@ This will build the project and deploy the `dist` folder to the `gh-pages` branc
 
 ## Component Libraries
 
-To speed up development and maintain visual consistency, this project uses components from [shadcn/ui](https://ui.shadcn.com/docs) and [here](https://ui.shadcn.com/docs/components). You can browse the available components and their documentation to build new features faster.
+To speed up development and maintain visual consistency, this project uses components from [shadcn/ui](https://ui.shadcn.com/docs). You can browse the available components and their documentation to build new features faster.
+
+## Styling
+
+[Tailwind CSS](https://tailwindcss.com/docs) is used for styling components. You can leverage its utility classes to create custom styles and maintain a consistent design.
