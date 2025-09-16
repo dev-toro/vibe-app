@@ -27,3 +27,7 @@ npm run deploy
 ```
 
 This will build the project and deploy the `dist` folder to the `gh-pages` branch.
+
+## Component Libraries
+
+To speed up development and maintain visual consistency, this project uses components from [shadcn/ui](https://ui.shadcn.com/docs) and [here](https://ui.shadcn.com/docs/components). You can browse the available components and their documentation to build new features faster.
